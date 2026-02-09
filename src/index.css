@@ -1,0 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #f0f1f5;
+  --color-secondary: #8b8fa3;
+  --color-bg-page: #0f1117;
+  --color-bg-elevated: #252836;
+  --color-muted: #5c6078;
+  --color-accent-teal: #2dd4a8;
+  --color-accent-teal-light: #5eedc4;
+  --color-accent-teal-muted: #1a3a35;
+  --color-card: #1a1d27;
+}
+
+body {
+  background-color: var(--color-bg-page);
+}
