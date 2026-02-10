@@ -15,7 +15,7 @@ export default function Trending() {
     } = useInfiniteQuery<TrendingResponse>({
         queryKey: ['trending-page'],
         queryFn: ({ pageParam }) =>
-            fetch(`${TMDB_BASE_URL}/popular?page=${pageParam}`, getFetchOptions())
+            fetch(`${TMDB_BASE_URL}/movie/popular?page=${pageParam}`, getFetchOptions())
                 .then(res => res.json()),
         initialPageParam: 1,
         getNextPageParam: (lastPage) => {

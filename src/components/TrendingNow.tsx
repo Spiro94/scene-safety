@@ -7,7 +7,7 @@ import { Link } from 'react-router';
 export default function TrendingNow() {
     const { isPending, error, data } = useQuery<TrendingResponse>({
         queryKey: ['trending'],
-        queryFn: () => fetch(`${TMDB_BASE_URL}/popular`, getFetchOptions()).then(res => res.json())
+        queryFn: () => fetch(`${TMDB_BASE_URL}/movie/popular`, getFetchOptions()).then(res => res.json())
     })
 
     let content;

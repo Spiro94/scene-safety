@@ -6,6 +6,7 @@ import Search from './pages/Search.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Trending from './pages/Trending.tsx';
 import MovieDetails from './pages/MovieDetails.tsx';
+import Results from './pages/Results.tsx';
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: '/movies/:movieId',
     element: <MovieDetails />
+  },
+  {
+    path: '/results',
+    element: <Results />
   }
 ]);
 
