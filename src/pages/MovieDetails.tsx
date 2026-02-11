@@ -39,7 +39,7 @@ export default function MovieDetails() {
     const releaseDate = new Date(data.release_date);
 
     return (
-        <div className='px-16 py-16 text-primary'>
+        <div className='px-16 py-16 text-primary mx-auto max-w-7xl'>
             <div className='flex gap-8'>
                 <img src={posterUrl} alt={data.original_title} className='w-48 rounded-2xl' />
                 <div className="flex flex-col gap-4">

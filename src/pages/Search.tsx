@@ -14,7 +14,7 @@ export default function Search() {
     };
 
     return (
-        <>
+        <div className="max-w-7xl mx-auto">
             <div className="py-40 px-6 flex flex-col items-center gap-8 max-w-3xl mx-auto text-center">
                 <h1 className="text-primary text-6xl font-semibold">Know before you watch.</h1>
                 <p className="text-secondary text-base">Search any movie to find detailed trigger warnings and content context.</p>
@@ -28,6 +28,6 @@ export default function Search() {
                 />
             </div>
             <TrendingNow />
-        </>
+        </div>
     )
 }

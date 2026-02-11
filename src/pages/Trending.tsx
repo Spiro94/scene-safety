@@ -62,9 +62,9 @@ export default function Trending() {
     const movies = result.data.pages.flatMap(page => page.results)
 
     return (
-        <div className='px-8 py-6'>
+        <div className='px-8 py-6 max-w-7xl mx-auto'>
             <h1 className='text-primary text-4xl font-semibold mb-8'>Trending movies</h1>
-            <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-9 gap-4'>
+            <div className='grid grid-cols-6 gap-6'>
                 {movies.map(movie => (
                     <MovieCard key={movie.id} movie={movie} />
                 ))}

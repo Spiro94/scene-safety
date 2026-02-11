@@ -42,33 +42,33 @@ export default function Results() {
     }
 
     return (
-        <>
-            <div className='flex flex-col gap-4 items-start px-8 py-6'>
-                <Link to={'/'}>
-                    <Button type='ghost'><ArrowLeftCircleIcon></ArrowLeftCircleIcon> Back to home</Button>
-                </Link>
-                <input
-                    ref={inputRef}
-                    id="query"
-                    type="text"
-                    placeholder="Search movies..."
-                    defaultValue={query}
-                    onChange={handleInputChange}
-                    autoFocus
-                    className="w-sm sm:w-2xl lg:w-3xl text-secondary py-4 px-6 bg-bg-elevated rounded-2xl"
-                />
-                {isLoading && <p className='text-primary'>Loading...</p>}
-                {(data && data.results) && (
-                    <>
-                        <span className='text-primary text-sm'>{data.results.length} results <span className='text-secondary'>for "{debouncedSearch}"</span></span>
-                        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-9 gap-4 mt-8'>
-                            {data.results.map((movie: Movie) => (
-                                <MovieCard key={movie.id} movie={movie} />
-                            ))}
-                        </div>
-                    </>
-                )}
-            </div>
-        </>
+
+        <div className='flex flex-col gap-4 items-start px-8 py-6 max-w-7xl mx-auto'>
+            <Link to={'/'}>
+                <Button type='ghost'><ArrowLeftCircleIcon></ArrowLeftCircleIcon> Back to home</Button>
+            </Link>
+            <input
+                ref={inputRef}
+                id="query"
+                type="text"
+                placeholder="Search movies..."
+                defaultValue={query}
+                onChange={handleInputChange}
+                autoFocus
+                className="w-sm sm:w-2xl lg:w-3xl text-secondary py-4 px-6 bg-bg-elevated rounded-2xl"
+            />
+            {isLoading && <p className='text-primary'>Loading...</p>}
+            {(data && data.results) && (
+                <>
+                    <span className='text-primary text-sm'>{data.results.length} results <span className='text-secondary'>for "{debouncedSearch}"</span></span>
+                    <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-9 gap-4 mt-8'>
+                        {data.results.map((movie: Movie) => (
+                            <MovieCard key={movie.id} movie={movie} />
+                        ))}
+                    </div>
+                </>
+            )}
+        </div>
+
     );
 }
