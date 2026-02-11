@@ -5,10 +5,21 @@ import { useParams } from 'react-router';
 import { normalizeRuntime } from '../utils/helpers';
 import { Plus, ShieldAlert } from 'lucide-react';
 import Button from '../components/Button';
+import { useRef } from 'react';
+import Dialog from '../components/Dialog';
 
 
 
 export default function MovieDetails() {
+    const dialogRef = useRef<HTMLDialogElement>(null);
+
+    const openModal = () => {
+        dialogRef.current!.showModal();
+    };
+
+    const closeModal = () => {
+        dialogRef.current!.close();
+    };
     const { movieId } = useParams<{ movieId: string }>();
 
     const { isPending, error, data } = useQuery<Movie>({
@@ -45,7 +56,8 @@ export default function MovieDetails() {
             <div className='mt-8'>
                 <div className='flex justify-between items-center'>
                     <div className='inline-flex gap-3 items-center'><ShieldAlert className='text-accent-amber'></ShieldAlert> <h2 className='font-semibold text-2xl'>Trigger Warnings</h2></div>
-                    <Button><Plus size={16} />Report trigger</Button>
+                    <Button onClick={() => { openModal() }}><Plus size={16} />Report trigger</Button>
+                    <Dialog ref={dialogRef} onClose={closeModal}></Dialog>
                 </div>
             </div>
         </div>

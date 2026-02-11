@@ -12,6 +12,9 @@
   --color-accent-teal-muted: #1a3a35;
   --color-card: #1a1d27;
   --color-accent-amber: #f5a623;
+  --color-border: #2e3247;
+  --color-card: #1a1d27;
+  --color-input: #2a2e3d;
 }
 
 body {
