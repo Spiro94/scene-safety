@@ -1,13 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
-import { useSearchParams, useNavigate, Link } from 'react-router';
-import { getFetchOptions, TMDB_BASE_URL } from '../utils/constants';
-import useDebounce from '../hooks/debounce';
-import type { SearchResponse } from '../models/searchResponse';
-import type { Movie } from '../models/movie';
+import { useNavigate, useSearchParams } from 'react-router';
+import BackButton from '../components/BackButton';
 import MovieCard from '../components/MovieCard';
-import Button from '../components/Button';
-import { ArrowLeftCircleIcon } from 'lucide-react';
+import useDebounce from '../hooks/debounce';
+import type { Movie } from '../models/movie';
+import type { SearchResponse } from '../models/searchResponse';
+import { getFetchOptions, TMDB_BASE_URL } from '../utils/constants';
 
 export default function Results() {
     const [searchParams] = useSearchParams();
@@ -32,21 +31,15 @@ export default function Results() {
 
     function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
         const newQuery = event.target.value;
-        if (newQuery.length > 0) {
-            // Update URL without adding to history stack
-            navigate(`/results?q=${encodeURIComponent(newQuery)}`, { replace: true });
-        } else {
-            // Navigate back to search page if query is empty
-            navigate('/', { replace: true });
-        }
+        // Update URL without adding to history stack
+        navigate(`/results?q=${encodeURIComponent(newQuery || '')}`, { replace: true });
+
     }
 
     return (
 
-        <div className='flex flex-col gap-4 items-start px-8 py-6 max-w-7xl mx-auto'>
-            <Link to={'/'}>
-                <Button type='ghost'><ArrowLeftCircleIcon></ArrowLeftCircleIcon> Back to home</Button>
-            </Link>
+        <div className='flex flex-col gap-4 items-start px-8 py-8 max-w-7xl mx-auto'>
+            <BackButton />
             <input
                 ref={inputRef}
                 id="query"
@@ -55,7 +48,7 @@ export default function Results() {
                 defaultValue={query}
                 onChange={handleInputChange}
                 autoFocus
-                className="w-sm sm:w-2xl lg:w-3xl text-secondary py-4 px-6 bg-bg-elevated rounded-2xl"
+                className="w-sm sm:w-2xl lg:w-3xl text-secondary py-4 px-6 bg-bg-elevated rounded-2xl mt-8"
             />
             {isLoading && <p className='text-primary'>Loading...</p>}
             {(data && data.results) && (
@@ -63,7 +56,7 @@ export default function Results() {
                     <span className='text-primary text-sm'>{data.results.length} results <span className='text-secondary'>for "{debouncedSearch}"</span></span>
                     <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-9 gap-4 mt-8'>
                         {data.results.map((movie: Movie) => (
-                            <MovieCard key={movie.id} movie={movie} />
+                            <MovieCard key={movie.id} movie={movie} from="/results" />
                         ))}
                     </div>
                 </>

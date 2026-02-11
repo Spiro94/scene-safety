@@ -5,6 +5,7 @@ import { useParams } from 'react-router';
 import { normalizeRuntime } from '../utils/helpers';
 import { Plus, ShieldAlert } from 'lucide-react';
 import Button from '../components/Button';
+import BackButton from '../components/BackButton';
 import { useRef } from 'react';
 import Dialog from '../components/Dialog';
 
@@ -39,8 +40,9 @@ export default function MovieDetails() {
     const releaseDate = new Date(data.release_date);
 
     return (
-        <div className='px-16 py-16 text-primary mx-auto max-w-7xl'>
-            <div className='flex gap-8'>
+        <div className='px-16 py-8 text-primary mx-auto max-w-7xl'>
+            <BackButton />
+            <div className='flex gap-8 mt-8'>
                 <img src={posterUrl} alt={data.original_title} className='w-48 rounded-2xl' />
                 <div className="flex flex-col gap-4">
                     <h1 className='font-bold text-4xl'>{data.original_title}</h1>

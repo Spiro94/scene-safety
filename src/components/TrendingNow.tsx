@@ -23,7 +23,7 @@ export default function TrendingNow() {
     if (data) {
         content = <div className='grid grid-cols-6 gap-4'>
             {data.results.slice(0, 6).map(movie => {
-                return <MovieCard key={movie.id} movie={movie} />
+                return <MovieCard key={movie.id} movie={movie} from="/" />
             })}
         </div>
     }

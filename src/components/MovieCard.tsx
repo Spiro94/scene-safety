@@ -5,13 +5,14 @@ import Fallback from '../assets/no-image.png'
 
 export type MovieCardProps = {
     movie: Movie
+    from?: string
 }
 
-export default function MovieCard({ movie }: MovieCardProps) {
+export default function MovieCard({ movie, from }: MovieCardProps) {
     const releaseDate = new Date(movie.release_date);
     const posterUrl = `${TMDB_IMAGE_BASE}/${BACKDROP_SIZE}${movie.poster_path}`;
     return (
-        <Link to={`/movies/${movie.id}`}>
+        <Link to={`/movies/${movie.id}`} state={{ from }}>
             <div className='flex flex-col gap-2 bg-card rounded-2xl overflow-hidden max-w-xs hover:scale-105 cursor-pointer transition duration-300 ease-in-out'>
                 <img className='aspect-2/3 w-full object-cover bg-black' src={posterUrl} alt={movie.original_title}
                     onError={
@@ -21,7 +22,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
                         }
                     } />
                 <div className='flex flex-col gap-3 p-4'>
-                    <h2 className='text-primary font-semibold text-base'>{movie.original_title}</h2>
+                    <h2 className='text-primary font-semibold text-base line-clamp-1'>{movie.original_title}</h2>
                     <h3 className='text-secondary'>{releaseDate.getFullYear()}</h3>
                 </div>
             </div>
