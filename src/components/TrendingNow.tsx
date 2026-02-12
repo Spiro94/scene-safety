@@ -3,12 +3,16 @@ import type { TrendingResponse } from '../models/trendingResponse';
 import { getFetchOptions, TMDB_BASE_URL } from '../utils/constants';
 import MovieCard from './MovieCard';
 import { Link } from 'react-router';
+import { useTriggerReportCounts } from '../hooks/useTriggerReportCounts';
 
 export default function TrendingNow() {
     const { isPending, error, data } = useQuery<TrendingResponse>({
         queryKey: ['trending'],
         queryFn: () => fetch(`${TMDB_BASE_URL}/movie/popular`, getFetchOptions()).then(res => res.json())
     })
+    const movies = data?.results.slice(0, 6) ?? [];
+    const movieIds = movies.map((m) => String(m.id));
+    const { data: reportCounts = {} } = useTriggerReportCounts(movieIds);
 
     let content;
 
@@ -22,8 +26,8 @@ export default function TrendingNow() {
 
     if (data) {
         content = <div className='grid grid-cols-6 gap-4'>
-            {data.results.slice(0, 6).map(movie => {
-                return <MovieCard key={movie.id} movie={movie} from="/" />
+            {movies.map(movie => {
+                return <MovieCard key={movie.id} movie={movie} triggerCount={reportCounts[String(movie.id)] ?? 0} />
             })}
         </div>
     }

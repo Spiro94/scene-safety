@@ -2,6 +2,8 @@ export const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p';
 export const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 export const BACKDROP_SIZE = 'w1280';
 
+export const TRIGGER_THRESHOLD = 2;
+
 export function getFetchOptions(method: string = 'GET') {
   return {
     method: method.toUpperCase(),
@@ -54,7 +56,10 @@ export const PHOBIA_LIST: Phobia[] = [
   { name: 'Phasmophobia', description: 'Fear of ghosts.' },
   { name: 'Pyrophobia', description: 'Fear of fire.' },
   { name: 'Scopophobia', description: 'Fear of being stared at.' },
-  { name: 'Social Phobia', description: 'Fear of social situations and judgment.' },
+  {
+    name: 'Social Phobia',
+    description: 'Fear of social situations and judgment.',
+  },
   { name: 'Thanatophobia', description: 'Fear of death or dying.' },
   { name: 'Thalassophobia', description: 'Fear of deep water.' },
   { name: 'Tokophobia', description: 'Fear of pregnancy or childbirth.' },
@@ -64,6 +69,9 @@ export const PHOBIA_LIST: Phobia[] = [
     name: 'Trypophobia',
     description: 'Fear or strong aversion to clusters of small holes.',
   },
-  { name: 'Xenophobia', description: 'Fear of strangers or unfamiliar people.' },
+  {
+    name: 'Xenophobia',
+    description: 'Fear of strangers or unfamiliar people.',
+  },
   { name: 'Zoophobia', description: 'Fear of animals.' },
 ];

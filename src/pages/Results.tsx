@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import BackButton from '../components/BackButton';
 import MovieCard from '../components/MovieCard';
-import useDebounce from '../hooks/debounce';
+import useDebounce from '../hooks/useDebounce';
 import type { Movie } from '../models/movie';
 import type { SearchResponse } from '../models/searchResponse';
 import { getFetchOptions, TMDB_BASE_URL } from '../utils/constants';

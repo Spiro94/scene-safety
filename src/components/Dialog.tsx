@@ -3,16 +3,21 @@ import React, { useState } from 'react'
 import Button from './Button'
 import { PHOBIA_LIST } from '../utils/constants'
 import Input from './Input'
+import { useSubmitTriggerReport } from '../hooks/useSubmitTriggerReport'
 
 export type DialogProps = {
+    movieId: string;
     ref?: React.Ref<HTMLDialogElement>,
     onClose: () => void
 }
 
-export default function Dialog({ ref, onClose }: DialogProps) {
+export default function Dialog({ ref, movieId, onClose }: DialogProps) {
     const [triggerType, setTriggerType] = useState('');
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
+    const [description, setDescription] = useState('');
+
+    const mutation = useSubmitTriggerReport()
 
     const formatTimestamp = (value: string) => {
         const digits = value.replace(/\D/g, '').slice(0, 6);
@@ -25,6 +30,18 @@ export default function Dialog({ ref, onClose }: DialogProps) {
         setStartTime('');
         setEndTime('');
         onClose();
+    }
+
+    function handleOnSubmit() {
+        mutation.mutate({
+            tmdb_movie_id: movieId,
+            trigger_type: triggerType,
+            start_time: startTime,
+            end_time: endTime,
+            description: description || null,
+        }, {
+            onSuccess: () => handleOnClose(),
+        })
     }
 
     const hasFullTimestamp = (value: string) => /^\d{2}:\d{2}:\d{2}$/.test(value);
@@ -77,13 +94,25 @@ export default function Dialog({ ref, onClose }: DialogProps) {
                         <label className='text-secondary font-semibold text-sm'>Description</label>
                         <p className='text-xs text-muted'>Optional</p>
                     </div>
-                    <Input multiline={true} placeholder='Describe what happens in the scene to help others prepare...'></Input>
+                    <Input multiline={true}
+                        placeholder='Describe what happens in the scene to help others prepare...'
+                        value={description}
+                        onChange={(event) => {
+                            setDescription(event.target.value)
+                        }}
+                        inputMode='text'
+                    ></Input>
                 </div>
             </div>
+            {mutation.isError && (
+                <p className='text-red-500 text-sm px-7'>Something went wrong. Please try again.</p>
+            )}
             <div className='flex gap-4 px-7 p-5 justify-end'>
 
                 <Button type='secondary' onClick={handleOnClose}>Cancel</Button>
-                <Button disabled={isSubmitDisabled} onClick={() => console.log('submitted')}><Send size={16} className=''></Send> Submit Report</Button>
+                <Button disabled={isSubmitDisabled || mutation.isPending} onClick={() => {
+                    handleOnSubmit();
+                }}><Send size={16}></Send> {mutation.isPending ? 'Submitting...' : 'Submit Report'}</Button>
             </div>
         </dialog>
 

@@ -1,13 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
+import { Plus, ShieldAlert } from 'lucide-react';
+import { useRef } from 'react';
+import { useParams } from 'react-router';
+import BackButton from '../components/BackButton';
+import Button from '../components/Button';
+import Dialog from '../components/Dialog';
+import TriggerCard from '../components/TriggerCard';
+import TriggerCardSkeleton from '../components/TriggerCardSkeleton';
+import { useTriggerReport } from '../hooks/useTriggerReport';
 import type { Movie } from '../models/movie';
 import { BACKDROP_SIZE, getFetchOptions, TMDB_BASE_URL, TMDB_IMAGE_BASE } from '../utils/constants';
-import { useParams } from 'react-router';
 import { normalizeRuntime } from '../utils/helpers';
-import { Plus, ShieldAlert } from 'lucide-react';
-import Button from '../components/Button';
-import BackButton from '../components/BackButton';
-import { useRef } from 'react';
-import Dialog from '../components/Dialog';
 
 
 
@@ -27,12 +30,17 @@ export default function MovieDetails() {
         queryKey: ['movie-details', movieId],
         queryFn: () => fetch(`${TMDB_BASE_URL}/movie/${movieId}`, getFetchOptions()).then(res => res.json())
     })
+    const { isPending: reportIsPending, error: reportError, data: reportData } = useTriggerReport(movieId)
+
+    if (!movieId) {
+        return <>No movie ID - 404</>
+    }
 
     if (isPending) {
         return <>Loading...</>
     }
 
-    if (error) {
+    if (error || !movieId) {
         return <>Error</>
     }
 
@@ -58,8 +66,22 @@ export default function MovieDetails() {
             <div className='mt-8'>
                 <div className='flex justify-between items-center'>
                     <div className='inline-flex gap-3 items-center'><ShieldAlert className='text-accent-amber'></ShieldAlert> <h2 className='font-semibold text-2xl'>Trigger Warnings</h2></div>
-                    <Button onClick={() => { openModal() }}><Plus size={16} />Report trigger</Button>
-                    <Dialog ref={dialogRef} onClose={closeModal}></Dialog>
+                    <div className='inline-flex items-center gap-4'>
+                        {reportData && <p className='text-secondary text-sm'>{`${reportData.length} triggers identified`}</p>}
+                        <Button onClick={() => { openModal() }}><Plus size={16} />Report trigger</Button>
+                    </div>
+                    <Dialog movieId={movieId} ref={dialogRef} onClose={closeModal}></Dialog>
+                </div>
+                <div className='mt-6 flex flex-col gap-4'>
+                    {reportIsPending && Array.from({ length: 3 }).map((_, index) => (
+                        <TriggerCardSkeleton key={index} />
+                    ))}
+                    {!reportIsPending && reportError && (
+                        <p className='text-secondary text-sm'>Could not load trigger warnings.</p>
+                    )}
+                    {!reportIsPending && !reportError && reportData?.map(report => {
+                        return <TriggerCard key={report.id} report={report} />
+                    })}
                 </div>
             </div>
         </div>
