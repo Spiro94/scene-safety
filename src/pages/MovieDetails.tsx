@@ -82,6 +82,11 @@ export default function MovieDetails() {
                     {!reportIsPending && !reportError && reportData?.map(report => {
                         return <TriggerCard key={report.id} report={report} />
                     })}
+                    {
+                        !reportIsPending && !reportError && reportData?.length === 0 && (
+                            <p className='text-secondary text-sm'>No trigger warnings reported yet. Be the first to <button onClick={openModal} className='text-accent-teal hover:text-accent-teal-light cursor-pointer'>report a trigger.</button></p>
+                        )
+                    }
                 </div>
             </div>
         </div>

@@ -37,7 +37,7 @@ export default function TrendingNow() {
             <div className='px-16 mb-8 flex flex-col gap-10'>
                 <div className='flex justify-between '>
                     <h1 className='text-primary text-xl font-semibold'>Trending Now</h1>
-                    <Link to='/trending' className='text-accent-teal text-sm cursor-pointer hover:text-accent-teal-light'>See all</Link>
+                    <Link to='/app/trending' className='text-accent-teal text-sm cursor-pointer hover:text-accent-teal-light'>See all</Link>
                 </div>
                 {content}
             </div>

@@ -32,7 +32,7 @@ export default function MovieCard({
     const badgeLevel = getTriggerBadgeLevel(triggerCount);
     const shouldShowBadge = badgeLevel !== 'none';
     return (
-        <Link to={`/movies/${movie.id}`} state={{ from }}>
+        <Link to={`/app/movies/${movie.id}`} state={{ from }}>
             <div className='flex flex-col gap-2 bg-card rounded-2xl overflow-hidden max-w-xs hover:scale-105 cursor-pointer transition duration-300 ease-in-out'>
                 <img
                     className='aspect-2/3 w-full object-cover bg-black'
