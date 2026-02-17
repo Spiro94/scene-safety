@@ -1,16 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
-import type { TrendingResponse } from '../models/trendingResponse';
-import { getFetchOptions, TMDB_BASE_URL } from '../utils/constants';
-import MovieCard from './MovieCard';
 import { Link } from 'react-router';
+import { useTrendingMovies } from '../hooks/useTrendingMovies';
 import { useTriggerReportCounts } from '../hooks/useTriggerReportCounts';
+import MovieCard from './MovieCard';
 import MovieCardSkeleton from './MovieCardSkeleton';
 
 export default function TrendingNow() {
-    const { isPending, error, data } = useQuery<TrendingResponse>({
-        queryKey: ['trending'],
-        queryFn: () => fetch(`${TMDB_BASE_URL}/movie/popular`, getFetchOptions()).then(res => res.json())
-    })
+    const { isPending, error, data } = useTrendingMovies();
     const movies = data?.results.slice(0, 6) ?? [];
     const movieIds = movies.map((m) => String(m.id));
     const { data: reportCounts = {} } = useTriggerReportCounts(movieIds);

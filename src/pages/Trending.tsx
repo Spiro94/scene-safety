@@ -5,6 +5,7 @@ import { getFetchOptions, TMDB_BASE_URL } from '../utils/constants'
 import { useEffect, useRef } from 'react'
 import BackButton from '../components/BackButton'
 import MovieCardSkeleton from '../components/MovieCardSkeleton'
+import { useTriggerReportCounts } from '../hooks/useTriggerReportCounts'
 
 export default function Trending() {
     const loadMoreRef = useRef<HTMLDivElement>(null)
@@ -28,6 +29,11 @@ export default function Trending() {
             return undefined
         },
     })
+
+    const movieIds = result?.data?.pages.flatMap(page => page.results).map(movie => String(movie.id)) ?? []
+
+    const { data: reportCounts = {} } = useTriggerReportCounts(movieIds);
+
 
     // Intersection Observer to trigger loading more
     useEffect(() => {
@@ -79,7 +85,7 @@ export default function Trending() {
             <h1 className='text-primary text-4xl font-semibold mb-8 mt-8'>Trending movies</h1>
             <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6'>
                 {movies.map(movie => (
-                    <MovieCard key={movie.id} movie={movie} from="/trending" />
+                    <MovieCard key={movie.id} movie={movie} from="/trending" triggerCount={reportCounts[String(movie.id)] ?? 0} />
                 ))}
                 {isFetchingNextPage && Array.from({ length: 6 }).map((_, index) => (
                     <MovieCardSkeleton key={`loading-${index}`} />
