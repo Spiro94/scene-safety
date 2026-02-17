@@ -1,6 +1,6 @@
 import { ArrowRight, Mail, TriangleAlert } from 'lucide-react'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import Input from '../components/Input'
 import LabeledInput from '../components/LabeledInput'
 import { useAppDispatch } from '../hooks/useDispatch'
@@ -18,8 +18,10 @@ interface IFormInput {
 
 export default function SignUp() {
     const navigate = useNavigate();
+    const location = useLocation();
     const dispatch = useAppDispatch();
     const { error, loading, isAuthenticated } = useAppSelector((state) => state.auth)
+    const redirectTo = (location.state as { from?: string } | null)?.from || '/app/search';
     const {
         register,
         handleSubmit,
@@ -27,8 +29,8 @@ export default function SignUp() {
     } = useForm<IFormInput>()
 
     useEffect(() => {
-        if (isAuthenticated) navigate('/app/search')
-    }, [isAuthenticated, navigate])
+        if (isAuthenticated) navigate(redirectTo, { replace: true })
+    }, [isAuthenticated, navigate, redirectTo])
 
     useEffect(() => {
         dispatch(clearError());
@@ -39,7 +41,7 @@ export default function SignUp() {
         if (loading) return
         const result = await dispatch(signUpAsync({ email: data.email, password: data.password }))
         if (signUpAsync.fulfilled.match(result)) {
-            navigate('/app/search')
+            navigate(redirectTo, { replace: true })
         }
     }
 
@@ -95,7 +97,7 @@ export default function SignUp() {
                     <Input type="submit" value={loading ? 'Creating account...' : 'Create account'} disabled={loading} prefixIcon={<ArrowRight size={18} />} className="mt-8" />
                     <div className="inline-flex gap-2 mt-8">
                         <span className="text-muted text-sm">Already have an account?</span>
-                        <button type='button' onClick={() => navigate('/')} className="text-accent-teal text-sm font-medium cursor-pointer">Sign in</button>
+                        <button type='button' onClick={() => navigate('/', { state: { from: redirectTo } })} className="text-accent-teal text-sm font-medium cursor-pointer">Sign in</button>
                     </div>
                 </form>
             </div>

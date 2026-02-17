@@ -1,7 +1,7 @@
 import { ArrowRight, Mail, TriangleAlert } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import Input from "../components/Input";
 import LabeledInput from "../components/LabeledInput";
 import { useAppSelector } from "../hooks/useAppSelector";
@@ -15,8 +15,10 @@ interface IFormInput {
 
 export default function SignIn() {
     const navigate = useNavigate();
+    const location = useLocation();
     const dispatch = useAppDispatch();
     const { error, loading, isAuthenticated } = useAppSelector((state) => state.auth)
+    const redirectTo = (location.state as { from?: string } | null)?.from || '/app/search';
     const {
         register,
         handleSubmit,
@@ -24,8 +26,8 @@ export default function SignIn() {
     } = useForm<IFormInput>()
 
     useEffect(() => {
-        if (isAuthenticated) navigate('/app/search')
-    }, [isAuthenticated, navigate])
+        if (isAuthenticated) navigate(redirectTo, { replace: true })
+    }, [isAuthenticated, navigate, redirectTo])
 
     useEffect(() => {
         dispatch(clearError());
@@ -36,7 +38,7 @@ export default function SignIn() {
         if (loading) return
         const result = await dispatch(signInAsync({ email: data.email, password: data.password }))
         if (signInAsync.fulfilled.match(result)) {
-            navigate('/app/search')
+            navigate(redirectTo, { replace: true })
         }
     }
 
@@ -83,7 +85,7 @@ export default function SignIn() {
                     <Input type="submit" value={loading ? 'Authenticating...' : 'Sign In'} disabled={loading} prefixIcon={<ArrowRight size={18} />} className="mt-8" />
                     <div className="inline-flex gap-2 mt-8">
                         <span className="text-muted text-sm">Don't have an account?</span>
-                        <button type="button" onClick={() => navigate('/sign_up')} className="text-accent-teal text-sm font-medium cursor-pointer">Sign up</button>
+                        <button type="button" onClick={() => navigate('/sign_up', { state: { from: redirectTo } })} className="text-accent-teal text-sm font-medium cursor-pointer">Sign up</button>
                     </div>
                 </form>
             </div>
