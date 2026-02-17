@@ -38,6 +38,22 @@ export async function signOut() {
   }
 }
 
+export async function getCurrentSession() {
+  const { data, error } = await supabaseClient.auth.getSession();
+
+  if (error) {
+    throw error;
+  }
+
+  return data.session;
+}
+
+export function onAuthStateChange(
+  callback: Parameters<typeof supabaseClient.auth.onAuthStateChange>[0],
+) {
+  return supabaseClient.auth.onAuthStateChange(callback);
+}
+
 /// ***** Trigger Report API *****
 
 export async function submitTriggerReport(report: TriggerReport) {

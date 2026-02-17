@@ -3,7 +3,7 @@ import {
   createAsyncThunk,
   type PayloadAction,
 } from '@reduxjs/toolkit';
-import { signUp, signIn, signOut } from '../../api/supabase';
+import { signUp, signIn, signOut, getCurrentSession } from '../../api/supabase';
 
 export interface AuthState {
   user: { email: string } | null;
@@ -51,11 +51,23 @@ export const signInAsync = createAsyncThunk(
 
 export const signOutAsync = createAsyncThunk(
   'auth/signOut',
-  async ({}, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       await signOut();
     } catch (error: any) {
       return rejectWithValue(error.message || 'Sign out failed');
+    }
+  },
+);
+
+export const initializeAuthAsync = createAsyncThunk(
+  'auth/initialize',
+  async (_, { rejectWithValue }) => {
+    try {
+      const session = await getCurrentSession();
+      return session?.user?.email ? { email: session.user.email } : null;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Initialization failed');
     }
   },
 );
@@ -67,8 +79,43 @@ const authSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
+    setAuthenticatedUser: (state, action: PayloadAction<{ email: string }>) => {
+      state.user = action.payload;
+      state.isAuthenticated = true;
+      state.error = null;
+      state.loading = false;
+    },
+    clearAuthState: (state) => {
+      state.user = null;
+      state.isAuthenticated = false;
+      state.error = null;
+      state.loading = false;
+    },
   },
   extraReducers: (builder) => {
+    // Initialize
+    builder
+      .addCase(initializeAuthAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(initializeAuthAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        if (action.payload) {
+          state.user = action.payload;
+          state.isAuthenticated = true;
+        } else {
+          state.user = null;
+          state.isAuthenticated = false;
+        }
+      })
+      .addCase(initializeAuthAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.user = null;
+        state.isAuthenticated = false;
+        state.error = action.payload as string;
+      });
+
     // Sign out
     builder
       .addCase(signOutAsync.pending, (state) => {
@@ -131,5 +178,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { clearError } = authSlice.actions;
+export const { clearError, setAuthenticatedUser, clearAuthState } =
+  authSlice.actions;
 export default authSlice.reducer;

@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { StrictMode } from 'react';
+import { StrictMode, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { createBrowserRouter, RouterProvider } from 'react-router';
@@ -12,6 +12,9 @@ import SignIn from './pages/SignIn.tsx';
 import SignUp from './pages/SignUp.tsx';
 import Trending from './pages/Trending.tsx';
 import { store } from './store/store.ts';
+import { useAppDispatch } from './hooks/useDispatch.ts';
+import { clearAuthState, initializeAuthAsync, setAuthenticatedUser } from './store/slices/authSlice.ts';
+import { onAuthStateChange } from './api/supabase.ts';
 
 
 const queryClient = new QueryClient();
@@ -50,13 +53,34 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById('root')!).render(
-
   <StrictMode>
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <AppBootstrap />
       </QueryClientProvider>
     </Provider>
   </StrictMode >,
-
 )
+
+function AppBootstrap() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(initializeAuthAsync());
+
+    const { data: subscription } = onAuthStateChange(async (_event, session) => {
+      const email = session?.user?.email;
+      if (email) {
+        dispatch(setAuthenticatedUser({ email }));
+      } else {
+        dispatch(clearAuthState());
+      }
+    });
+
+    return () => {
+      subscription.subscription.unsubscribe();
+    };
+  }, [dispatch]);
+
+  return <RouterProvider router={router} />;
+}

@@ -78,10 +78,7 @@ export default function SignUp() {
                         {errors?.email?.type === 'required' && <p className='inline-flex gap-2 items-center text-sm text-accent-red'><TriangleAlert size={16}></TriangleAlert> {errors.email.message}</p>}
                         {errors?.email?.type === 'pattern' && <p className='inline-flex gap-2 items-center text-sm text-accent-red'><TriangleAlert size={16}></TriangleAlert> {errors.email.message}</p>}
                     </div>
-                    <div>
-                        <LabeledInput label="Password" placeholder="••••••••" type='password' {...register("password", { required: "Password is required" })} />
-
-                    </div>
+                    <LabeledInput label="Password" placeholder="••••••••" type='password' {...register("password", { required: "Password is required" })} />
                     <div>
                         <LabeledInput label="Confirm Password" placeholder="••••••••" type='password' {...register("confirmPassword", {
                             required: "Please confirm your password",
