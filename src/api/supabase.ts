@@ -29,6 +29,15 @@ export async function signIn(email: string, password: string) {
   return data;
 }
 
+export async function signOut() {
+  const { error } = await supabaseClient.auth.signOut();
+
+  if (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 /// ***** Trigger Report API *****
 
 export async function submitTriggerReport(report: TriggerReport) {
