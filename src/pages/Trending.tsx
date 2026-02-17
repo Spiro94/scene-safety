@@ -4,6 +4,7 @@ import type { TrendingResponse } from '../models/trendingResponse'
 import { getFetchOptions, TMDB_BASE_URL } from '../utils/constants'
 import { useEffect, useRef } from 'react'
 import BackButton from '../components/BackButton'
+import MovieCardSkeleton from '../components/MovieCardSkeleton'
 
 export default function Trending() {
     const loadMoreRef = useRef<HTMLDivElement>(null)
@@ -52,7 +53,17 @@ export default function Trending() {
     }, [fetchNextPage, hasNextPage, isFetchingNextPage])
 
     if (result.isPending) {
-        return <div className='text-primary'>Loading</div>
+        return (
+            <div className='px-16 py-8 max-w-7xl mx-auto'>
+                <BackButton />
+                <h1 className='text-primary text-4xl font-semibold mb-8 mt-8'>Trending movies</h1>
+                <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6'>
+                    {Array.from({ length: 12 }).map((_, index) => (
+                        <MovieCardSkeleton key={index} />
+                    ))}
+                </div>
+            </div>
+        )
     }
 
     if (result.error) {
@@ -66,15 +77,18 @@ export default function Trending() {
         <div className='px-16 py-8 max-w-7xl mx-auto'>
             <BackButton />
             <h1 className='text-primary text-4xl font-semibold mb-8 mt-8'>Trending movies</h1>
-            <div className='grid grid-cols-6 gap-6'>
+            <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6'>
                 {movies.map(movie => (
                     <MovieCard key={movie.id} movie={movie} from="/trending" />
+                ))}
+                {isFetchingNextPage && Array.from({ length: 6 }).map((_, index) => (
+                    <MovieCardSkeleton key={`loading-${index}`} />
                 ))}
             </div>
             {/* Sentinel element - triggers load when scrolled into view */}
             <div ref={loadMoreRef} className='h-10 mt-4'>
-                {isFetchingNextPage && (
-                    <div className='text-primary text-center'>Loading more...</div>
+                {isFetchingNextPage && movies.length > 0 && (
+                    <div className='text-secondary text-center'>Loading more...</div>
                 )}
             </div>
         </div>

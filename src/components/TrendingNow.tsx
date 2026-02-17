@@ -4,6 +4,7 @@ import { getFetchOptions, TMDB_BASE_URL } from '../utils/constants';
 import MovieCard from './MovieCard';
 import { Link } from 'react-router';
 import { useTriggerReportCounts } from '../hooks/useTriggerReportCounts';
+import MovieCardSkeleton from './MovieCardSkeleton';
 
 export default function TrendingNow() {
     const { isPending, error, data } = useQuery<TrendingResponse>({
@@ -17,7 +18,13 @@ export default function TrendingNow() {
     let content;
 
     if (isPending) {
-        content = <p className='text-primary'>Loading info</p>
+        content = (
+            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4'>
+                {Array.from({ length: 6 }).map((_, index) => (
+                    <MovieCardSkeleton key={index} />
+                ))}
+            </div>
+        )
     }
 
     if (error) {

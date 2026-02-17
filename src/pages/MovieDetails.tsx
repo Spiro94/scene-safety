@@ -12,7 +12,34 @@ import type { Movie } from '../models/movie';
 import { BACKDROP_SIZE, getFetchOptions, TMDB_BASE_URL, TMDB_IMAGE_BASE } from '../utils/constants';
 import { normalizeRuntime } from '../utils/helpers';
 
-
+function MovieDetailsSkeleton() {
+    return (
+        <div className='px-16 py-8 text-primary mx-auto max-w-7xl animate-pulse'>
+            <BackButton />
+            <div className='flex gap-8 mt-8'>
+                <div className='w-48 h-72 rounded-2xl bg-bg-elevated' />
+                <div className='flex flex-col gap-4 flex-1'>
+                    <div className='h-10 w-2/3 rounded bg-bg-elevated' />
+                    <div className='h-5 w-40 rounded bg-bg-elevated' />
+                    <div className='h-4 w-full rounded bg-bg-elevated' />
+                    <div className='h-4 w-11/12 rounded bg-bg-elevated' />
+                    <div className='h-4 w-9/12 rounded bg-bg-elevated' />
+                </div>
+            </div>
+            <div className='mt-8'>
+                <div className='flex justify-between items-center'>
+                    <div className='h-8 w-52 rounded bg-bg-elevated' />
+                    <div className='h-10 w-36 rounded-xl bg-bg-elevated' />
+                </div>
+                <div className='mt-6 flex flex-col gap-4'>
+                    {Array.from({ length: 3 }).map((_, index) => (
+                        <TriggerCardSkeleton key={index} />
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
 
 export default function MovieDetails() {
     const dialogRef = useRef<HTMLDialogElement>(null);
@@ -29,19 +56,19 @@ export default function MovieDetails() {
     const { isPending, error, data } = useQuery<Movie>({
         queryKey: ['movie-details', movieId],
         queryFn: () => fetch(`${TMDB_BASE_URL}/movie/${movieId}`, getFetchOptions()).then(res => res.json())
-    })
-    const { isPending: reportIsPending, error: reportError, data: reportData } = useTriggerReport(movieId)
+    });
+    const { isPending: reportIsPending, error: reportError, data: reportData } = useTriggerReport(movieId);
 
     if (!movieId) {
-        return <>No movie ID - 404</>
+        return <>No movie ID - 404</>;
     }
 
     if (isPending) {
-        return <>Loading...</>
+        return <MovieDetailsSkeleton />;
     }
 
     if (error || !movieId) {
-        return <>Error</>
+        return <>Error</>;
     }
 
     const posterUrl = `${TMDB_IMAGE_BASE}/${BACKDROP_SIZE}${data.poster_path}`;
@@ -52,9 +79,9 @@ export default function MovieDetails() {
             <BackButton />
             <div className='flex gap-8 mt-8'>
                 <img src={posterUrl} alt={data.original_title} className='w-48 rounded-2xl' />
-                <div className="flex flex-col gap-4">
+                <div className='flex flex-col gap-4'>
                     <h1 className='font-bold text-4xl'>{data.original_title}</h1>
-                    <div className="inline-flex gap-4 text-secondary text-sm ">
+                    <div className='inline-flex gap-4 text-secondary text-sm '>
                         <h2>{releaseDate.getFullYear()}</h2>
                         <h2>{normalizeRuntime(data.runtime)}</h2>
                     </div>
@@ -68,7 +95,7 @@ export default function MovieDetails() {
                     <div className='inline-flex gap-3 items-center'><ShieldAlert className='text-accent-amber'></ShieldAlert> <h2 className='font-semibold text-2xl'>Trigger Warnings</h2></div>
                     <div className='inline-flex items-center gap-4'>
                         {reportData && <p className='text-secondary text-sm'>{`${reportData.length} triggers identified`}</p>}
-                        <Button onClick={() => { openModal() }}><Plus size={16} />Report trigger</Button>
+                        <Button onClick={() => { openModal(); }}><Plus size={16} />Report trigger</Button>
                     </div>
                     <Dialog movieId={movieId} ref={dialogRef} onClose={closeModal}></Dialog>
                 </div>
@@ -80,7 +107,7 @@ export default function MovieDetails() {
                         <p className='text-secondary text-sm'>Could not load trigger warnings.</p>
                     )}
                     {!reportIsPending && !reportError && reportData?.map(report => {
-                        return <TriggerCard key={report.id} report={report} />
+                        return <TriggerCard key={report.id} report={report} />;
                     })}
                     {
                         !reportIsPending && !reportError && reportData?.length === 0 && (
@@ -90,5 +117,5 @@ export default function MovieDetails() {
                 </div>
             </div>
         </div>
-    )
+    );
 }
