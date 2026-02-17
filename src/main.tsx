@@ -9,6 +9,7 @@ import MovieDetails from './pages/MovieDetails.tsx';
 import Results from './pages/Results.tsx';
 import ProtectedRoute from './pages/ProtectedRoute.tsx';
 import SignIn from './pages/SignIn.tsx';
+import SignUp from './pages/SignUp.tsx';
 
 const queryClient = new QueryClient();
 
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <SignIn />
+  },
+  {
+    path: '/sign_up',
+    element: <SignUp />
   },
   {
     element: <ProtectedRoute />,

@@ -4,9 +4,10 @@ export type ButtonProps = React.PropsWithChildren<{
     type?: 'primary' | 'secondary' | 'ghost';
     onClick?: () => void;
     disabled?: boolean;
+    className?: string;
 }>
 
-export default function Button({ type = 'primary', onClick, disabled = false, children }: ButtonProps) {
+export default function Button({ type = 'primary', onClick, disabled = false, className, children }: ButtonProps) {
     let c = '';
     const interactive = disabled ? 'cursor-not-allowed opacity-60' : 'cursor-pointer';
 
@@ -24,6 +25,6 @@ export default function Button({ type = 'primary', onClick, disabled = false, ch
 
 
     return (
-        <button disabled={disabled} onClick={onClick} className={`inline-flex items-center gap-3 px-6 py-3 text-sm font-medium rounded-xl ${c} ${interactive}`}>{children}</button>
+        <button disabled={disabled} onClick={onClick} className={`${className} inline-flex items-center justify-center gap-3 px-6 py-3 text-sm font-medium rounded-xl ${c} ${interactive}`}>{children}</button>
     )
 }
