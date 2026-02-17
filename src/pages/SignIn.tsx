@@ -1,10 +1,17 @@
+import type { FormEvent } from "react";
 import { ArrowRight, Mail } from "lucide-react";
 import { useNavigate } from "react-router";
-import Button from "../components/Button";
+import Input from "../components/Input";
 import LabeledInput from "../components/LabeledInput";
 
 export default function SignIn() {
     const navigate = useNavigate();
+
+    function handleSubmit(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        navigate('/app/search');
+    }
+
     return (
         <div className="flex min-h-screen items-center justify-center px-4 py-8">
             <div className="max-w-md w-full">
@@ -12,19 +19,20 @@ export default function SignIn() {
                 <p className="text-secondary text-sm text-center mt-2 mb-8">
                     Sign in to continue to Scene Safety
                 </p>
-                <div className="flex flex-col gap-4">
-                    <LabeledInput label="Email Address" placeholder="you@example.com" prefixIcon={<Mail />} />
+                <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+                    <LabeledInput label="Email Address" placeholder="you@example.com" prefixIcon={<Mail />} inputMode="email" />
                     <LabeledInput
                         label="Password"
-                        placeholder="******"
-                        labelRight={<button className="text-accent-teal text-sm font-medium cursor-pointer">Forgot password?</button>}
+                        placeholder="••••••••"
+                        type="password"
+                        labelRight={<button type="button" className="text-accent-teal text-sm font-medium cursor-pointer">Forgot password?</button>}
                     />
-                    <Button className="mt-8" onClick={() => navigate('/app/search')}>Sign in<ArrowRight size={18}></ArrowRight></Button>
+                    <Input type="submit" value="Sign in" prefixIcon={<ArrowRight size={18} />} className="mt-8" />
                     <div className="inline-flex gap-2 mt-8">
                         <span className="text-muted text-sm">Don't have an account?</span>
-                        <button onClick={() => navigate('/sign_up')} className="text-accent-teal text-sm font-medium cursor-pointer">Sign up</button>
+                        <button type="button" onClick={() => navigate('/sign_up')} className="text-accent-teal text-sm font-medium cursor-pointer">Sign up</button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     );

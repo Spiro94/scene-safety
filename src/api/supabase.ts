@@ -1,6 +1,36 @@
 import type { TriggerReport } from '../models/triggerReport';
 import { supabaseClient } from '../utils/supabaseClient';
 
+/// ***** User API *****
+
+export async function signUp(email: string, password: string) {
+  const { data, error } = await supabaseClient.auth.signUp({
+    email,
+    password,
+  });
+
+  if (error) {
+    console.error(error);
+    throw error;
+  }
+  return data;
+}
+
+export async function signIn(email: string, password: string) {
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    console.error(error);
+    throw error;
+  }
+  return data;
+}
+
+/// ***** Trigger Report API *****
+
 export async function submitTriggerReport(report: TriggerReport) {
   const { data, error } = await supabaseClient
     .from('trigger_reports')
