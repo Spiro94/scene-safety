@@ -32,7 +32,7 @@ export default function Results() {
     function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
         const newQuery = event.target.value;
         // Update URL without adding to history stack
-        navigate(`/results?q=${encodeURIComponent(newQuery || '')}`, { replace: true });
+        navigate(`/app/results?q=${encodeURIComponent(newQuery || '')}`, { replace: true });
 
     }
 
@@ -56,7 +56,7 @@ export default function Results() {
                     <span className='text-primary text-sm'>{data.results.length} results <span className='text-secondary'>for "{debouncedSearch}"</span></span>
                     <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-9 gap-4 mt-8'>
                         {data.results.map((movie: Movie) => (
-                            <MovieCard key={movie.id} movie={movie} from="/results" />
+                            <MovieCard key={movie.id} movie={movie} />
                         ))}
                     </div>
                 </>

@@ -1,11 +1,35 @@
 import { ChevronLeft } from 'lucide-react'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 
-export default function BackButton() {
+type BackButtonProps = {
+    fallbackTo?: string;
+};
+
+function normalizeAppPath(path: string) {
+    if (path.startsWith('/app/')) return path;
+    if (path.startsWith('/')) return `/app${path}`;
+    return `/app/${path}`;
+}
+
+export default function BackButton({ fallbackTo = '/app/search' }: BackButtonProps) {
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const from = (location.state as { from?: string } | null)?.from;
+    const normalizedFrom = from ? normalizeAppPath(from) : undefined;
 
     const handleBack = () => {
-        navigate(-1);
+        if (normalizedFrom) {
+            navigate(normalizedFrom);
+            return;
+        }
+
+        if (window.history.length > 1) {
+            navigate(-1);
+            return;
+        }
+
+        navigate(fallbackTo, { replace: true });
     };
 
     return (

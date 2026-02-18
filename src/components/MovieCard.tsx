@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import type { Movie } from '../models/movie';
 import { BACKDROP_SIZE, TMDB_IMAGE_BASE } from '../utils/constants';
 import { getTriggerBadgeLevel } from '../utils/helpers';
@@ -27,12 +27,16 @@ export default function MovieCard({
     from,
     triggerCount = 0,
 }: MovieCardProps) {
+    const location = useLocation();
     const releaseDate = new Date(movie.release_date);
     const posterUrl = `${TMDB_IMAGE_BASE}/${BACKDROP_SIZE}${movie.poster_path}`;
     const badgeLevel = getTriggerBadgeLevel(triggerCount);
     const shouldShowBadge = badgeLevel !== 'none';
+    const currentPath = `${location.pathname}${location.search}${location.hash}`;
+    const sourcePath = from ?? currentPath;
+
     return (
-        <Link to={`/app/movies/${movie.id}`} state={{ from }}>
+        <Link to={`/app/movies/${movie.id}`} state={{ from: sourcePath }}>
             <div className='flex flex-col gap-2 bg-card rounded-2xl overflow-hidden max-w-xs hover:scale-105 cursor-pointer transition duration-300 ease-in-out'>
                 <img
                     className='aspect-2/3 w-full object-cover bg-black'

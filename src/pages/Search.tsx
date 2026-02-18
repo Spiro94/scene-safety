@@ -9,7 +9,7 @@ export default function Search() {
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const query = event.target.value;
         if (query.length > 0) {
-            navigate(`/results?q=${encodeURIComponent(query)}`);
+            navigate(`/app/results?q=${encodeURIComponent(query)}`);
         }
     };
 

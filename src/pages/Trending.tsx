@@ -3,7 +3,6 @@ import MovieCard from '../components/MovieCard'
 import type { TrendingResponse } from '../models/trendingResponse'
 import { getFetchOptions, TMDB_BASE_URL } from '../utils/constants'
 import { useEffect, useRef } from 'react'
-import BackButton from '../components/BackButton'
 import MovieCardSkeleton from '../components/MovieCardSkeleton'
 import { useTriggerReportCounts } from '../hooks/useTriggerReportCounts'
 
@@ -61,8 +60,7 @@ export default function Trending() {
     if (result.isPending) {
         return (
             <div className='px-16 py-8 max-w-7xl mx-auto'>
-                <BackButton />
-                <h1 className='text-primary text-4xl font-semibold mb-8 mt-8'>Trending movies</h1>
+                <h1 className='text-primary text-4xl font-semibold mb-8'>Trending movies</h1>
                 <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6'>
                     {Array.from({ length: 12 }).map((_, index) => (
                         <MovieCardSkeleton key={index} />
@@ -81,11 +79,10 @@ export default function Trending() {
 
     return (
         <div className='px-16 py-8 max-w-7xl mx-auto'>
-            <BackButton />
-            <h1 className='text-primary text-4xl font-semibold mb-8 mt-8'>Trending movies</h1>
+            <h1 className='text-primary text-4xl font-semibold mb-8'>Trending movies</h1>
             <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6'>
                 {movies.map(movie => (
-                    <MovieCard key={movie.id} movie={movie} from="/trending" triggerCount={reportCounts[String(movie.id)] ?? 0} />
+                    <MovieCard key={movie.id} movie={movie} triggerCount={reportCounts[String(movie.id)] ?? 0} />
                 ))}
                 {isFetchingNextPage && Array.from({ length: 6 }).map((_, index) => (
                     <MovieCardSkeleton key={`loading-${index}`} />
