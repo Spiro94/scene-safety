@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import BackButton from '../components/BackButton';
+import LoadingTransition from '../components/LoadingTransition';
 import MovieCard from '../components/MovieCard';
 import useDebounce from '../hooks/useDebounce';
 import type { Movie } from '../models/movie';
@@ -50,7 +51,7 @@ export default function Results() {
                 autoFocus
                 className="w-sm sm:w-2xl lg:w-3xl text-secondary py-4 px-6 bg-bg-elevated rounded-2xl mt-8"
             />
-            {isLoading && <p className='text-primary'>Loading...</p>}
+            {isLoading && <LoadingTransition message='Searching movies...' />}
             {(data && data.results) && (
                 <>
                     <span className='text-primary text-sm'>{data.results.length} results <span className='text-secondary'>for "{debouncedSearch}"</span></span>

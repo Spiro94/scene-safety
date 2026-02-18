@@ -18,6 +18,8 @@
   --color-border: #2e3247;
   --color-card: #1a1d27;
   --color-input: #2a2e3d;
+  --color-accent-blue: #60a5fa;
+  --color-accent-blue-muted: #1e2a3a;
 }
 
 body {

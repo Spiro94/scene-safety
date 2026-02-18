@@ -1,21 +1,23 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { StrictMode, useEffect } from 'react';
+import { StrictMode, Suspense, lazy, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import './index.css';
-import MovieDetails from './pages/MovieDetails.tsx';
-import ProtectedRoute from './pages/ProtectedRoute.tsx';
-import Results from './pages/Results.tsx';
-import Search from './pages/Search.tsx';
-import SignIn from './pages/SignIn.tsx';
-import SignUp from './pages/SignUp.tsx';
-import Trending from './pages/Trending.tsx';
 import { store } from './store/store.ts';
 import { useAppDispatch } from './hooks/useDispatch.ts';
 import { clearAuthState, initializeAuthAsync, setAuthenticatedUser } from './store/slices/authSlice.ts';
 import { onAuthStateChange } from './api/supabase.ts';
-import AppLayout from './components/AppLayout.tsx';
+import LoadingTransition from './components/LoadingTransition.tsx';
+
+const MovieDetails = lazy(() => import('./pages/MovieDetails.tsx'));
+const ProtectedRoute = lazy(() => import('./pages/ProtectedRoute.tsx'));
+const Results = lazy(() => import('./pages/Results.tsx'));
+const Search = lazy(() => import('./pages/Search.tsx'));
+const SignIn = lazy(() => import('./pages/SignIn.tsx'));
+const SignUp = lazy(() => import('./pages/SignUp.tsx'));
+const Trending = lazy(() => import('./pages/Trending.tsx'));
+const AppLayout = lazy(() => import('./components/AppLayout.tsx'));
 
 
 const queryClient = new QueryClient();
@@ -64,7 +66,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <AppBootstrap />
+        <Suspense fallback={<LoadingTransition message="Loading page..." fullScreen />}>
+          <AppBootstrap />
+        </Suspense>
       </QueryClientProvider>
     </Provider>
   </StrictMode >,
