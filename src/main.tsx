@@ -15,6 +15,7 @@ import { store } from './store/store.ts';
 import { useAppDispatch } from './hooks/useDispatch.ts';
 import { clearAuthState, initializeAuthAsync, setAuthenticatedUser } from './store/slices/authSlice.ts';
 import { onAuthStateChange } from './api/supabase.ts';
+import AppLayout from './components/AppLayout.tsx';
 
 
 const queryClient = new QueryClient();
@@ -33,21 +34,28 @@ const router = createBrowserRouter([
     path: '/app',
     children: [
       {
-        path: "/app/search",
-        element: <Search />,
-      },
-      {
-        path: '/app/trending',
-        element: <Trending />
-      },
-      {
-        path: '/app/movies/:movieId',
-        element: <MovieDetails />
-      },
-      {
-        path: '/app/results',
-        element: <Results />
-      }],
+        element: <AppLayout />,
+        children: [
+
+          {
+            path: "/app/search",
+            element: <Search />,
+          },
+          {
+            path: '/app/trending',
+            element: <Trending />
+          },
+          {
+            path: '/app/movies/:movieId',
+            element: <MovieDetails />
+          },
+          {
+            path: '/app/results',
+            element: <Results />
+          }
+        ]
+      }
+    ],
   }
 
 ]);
