@@ -28,7 +28,7 @@ export default function MovieCard({
     triggerCount = 0,
 }: MovieCardProps) {
     const location = useLocation();
-    const releaseDate = new Date(movie.release_date);
+    const [year] = movie.release_date.split('-');
     const posterUrl = `${TMDB_IMAGE_BASE}/${BACKDROP_SIZE}${movie.poster_path}`;
     const badgeLevel = getTriggerBadgeLevel(triggerCount);
     const shouldShowBadge = badgeLevel !== 'none';
@@ -54,7 +54,7 @@ export default function MovieCard({
                         </h2>
 
                     </div>
-                    <h3 className='text-secondary'>{releaseDate.getFullYear()}</h3>
+                    <h3 className='text-secondary'>{year}</h3>
                     {shouldShowBadge && (
                         <span
                             className={`rounded-full px-3 py-2 text-xs font-semibold ${badgeStyles[badgeLevel]}`}

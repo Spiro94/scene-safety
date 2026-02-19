@@ -1,11 +1,13 @@
 {
   "extends": "./tsconfig.app.json",
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "ES2022",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "verbatimModuleSyntax": false,
-    "allowImportingTsExtensions": false
+    "allowImportingTsExtensions": false,
+    "isolatedModules": true,
+    "types": ["jest", "@testing-library/jest-dom", "node"]
   }
 }
