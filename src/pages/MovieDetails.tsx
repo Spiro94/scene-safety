@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import { Plus, ShieldAlert } from 'lucide-react';
 import { useRef } from 'react';
 import { useParams } from 'react-router';
@@ -7,9 +6,9 @@ import Button from '../components/Button';
 import Dialog from '../components/Dialog';
 import TriggerCard from '../components/TriggerCard';
 import TriggerCardSkeleton from '../components/TriggerCardSkeleton';
+import useMovieDetails from '../hooks/useMovieDetails';
 import { useTriggerReport } from '../hooks/useTriggerReport';
-import type { Movie } from '../models/movie';
-import { BACKDROP_SIZE, getFetchOptions, TMDB_BASE_URL, TMDB_IMAGE_BASE } from '../utils/constants';
+import { BACKDROP_SIZE, TMDB_IMAGE_BASE } from '../utils/constants';
 import { normalizeRuntime } from '../utils/helpers';
 
 function MovieDetailsSkeleton() {
@@ -43,6 +42,10 @@ function MovieDetailsSkeleton() {
 
 export default function MovieDetails() {
     const dialogRef = useRef<HTMLDialogElement>(null);
+    const { movieId } = useParams<{ movieId: string }>();
+
+    const { isPending, error, data } = useMovieDetails(movieId);
+    const { isPending: reportIsPending, error: reportError, data: reportData } = useTriggerReport(movieId);
 
     const openModal = () => {
         dialogRef.current!.showModal();
@@ -51,13 +54,6 @@ export default function MovieDetails() {
     const closeModal = () => {
         dialogRef.current!.close();
     };
-    const { movieId } = useParams<{ movieId: string }>();
-
-    const { isPending, error, data } = useQuery<Movie>({
-        queryKey: ['movie-details', movieId],
-        queryFn: () => fetch(`${TMDB_BASE_URL}/movie/${movieId}`, getFetchOptions()).then(res => res.json())
-    });
-    const { isPending: reportIsPending, error: reportError, data: reportData } = useTriggerReport(movieId);
 
     if (!movieId) {
         return <>No movie ID - 404</>;

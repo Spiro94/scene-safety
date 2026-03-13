@@ -1,3 +1,5 @@
+import type { Phobia } from '../models/phobia';
+
 export const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p';
 export const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 export const BACKDROP_SIZE = 'w1280';
@@ -13,11 +15,6 @@ export function getFetchOptions(method: string = 'GET') {
     },
   };
 }
-
-export type Phobia = {
-  name: string;
-  description: string;
-};
 
 export const PHOBIA_LIST: Phobia[] = [
   { name: 'Acrophobia', description: 'Fear of heights.' },
@@ -75,3 +72,5 @@ export const PHOBIA_LIST: Phobia[] = [
   },
   { name: 'Zoophobia', description: 'Fear of animals.' },
 ];
+
+export const CALIFICATION_LIST = ['high', 'medium', 'low'] as const;

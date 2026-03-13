@@ -1,10 +1,11 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import MovieCard from '../components/MovieCard'
-import type { TrendingResponse } from '../models/trendingResponse'
 import { getFetchOptions, TMDB_BASE_URL } from '../utils/constants'
 import { useEffect, useRef } from 'react'
 import MovieCardSkeleton from '../components/MovieCardSkeleton'
 import { useTriggerReportCounts } from '../hooks/useTriggerReportCounts'
+import type { Movie } from '../models/movie'
+import type { TmdbResponse } from '../models/tmdbResponse'
 
 export default function Trending() {
     const loadMoreRef = useRef<HTMLDivElement>(null)
@@ -14,7 +15,7 @@ export default function Trending() {
         hasNextPage,
         isFetchingNextPage,
         ...result
-    } = useInfiniteQuery<TrendingResponse>({
+    } = useInfiniteQuery<TmdbResponse<Movie>>({
         queryKey: ['trending-page'],
         queryFn: ({ pageParam }) =>
             fetch(`${TMDB_BASE_URL}/movie/popular?page=${pageParam}`, getFetchOptions())

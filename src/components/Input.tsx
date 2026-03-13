@@ -38,14 +38,15 @@ export default function Input({
 
     if (type === 'submit') {
         return (
-            <button
-                type="submit"
-                disabled={disabled}
-                className={`inline-flex w-full items-center justify-center gap-3 px-6 py-3 text-sm font-medium rounded-xl ${disabled ? 'bg-accent-teal-muted text-muted cursor-not-allowed opacity-60' : 'bg-accent-teal text-black cursor-pointer'} ${className}`}
-            >
-                <span>{value ?? 'Submit'}</span>
-                {prefixIcon}
-            </button>
+            <div className={`inline-flex gap-3 items-center px-4 py-4 rounded-xl text-sm font-semibold ${disabled ? 'bg-accent-teal-muted text-muted cursor-not-allowed opacity-60' : 'bg-accent-teal text-black cursor-pointer'} ${className}`}>
+                {prefixIcon && <div className=''>{prefixIcon}</div>}
+                <input
+                    type="submit"
+                    disabled={disabled}
+                    value={value ?? 'Submit'}
+                    className={`${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                />
+            </div>
         )
     }
 

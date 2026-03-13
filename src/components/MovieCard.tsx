@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router';
 import type { Movie } from '../models/movie';
 import { BACKDROP_SIZE, TMDB_IMAGE_BASE } from '../utils/constants';
-import { getTriggerBadgeLevel } from '../utils/helpers';
+import { badgeLabels, badgeStyles, getTriggerBadgeLevel } from '../utils/helpers';
 import Fallback from '../assets/no-image.png';
 
 export type MovieCardProps = {
@@ -9,18 +9,6 @@ export type MovieCardProps = {
     from?: string;
     triggerCount?: number;
 };
-
-const badgeStyles = {
-    low: 'bg-accent-teal-muted text-accent-teal',
-    medium: 'bg-accent-amber-muted text-accent-amber',
-    high: 'bg-accent-red-muted text-accent-red',
-} as const;
-
-const badgeLabels = {
-    low: 'Low',
-    medium: 'Medium',
-    high: 'High',
-} as const;
 
 export default function MovieCard({
     movie,

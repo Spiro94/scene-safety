@@ -9,6 +9,7 @@ import { useAppDispatch } from './hooks/useDispatch.ts';
 import { clearAuthState, initializeAuthAsync, setAuthenticatedUser } from './store/slices/authSlice.ts';
 import { onAuthStateChange } from './api/supabase.ts';
 import LoadingTransition from './components/LoadingTransition.tsx';
+import Community from './pages/Community.tsx';
 
 const MovieDetails = lazy(() => import('./pages/MovieDetails.tsx'));
 const ProtectedRoute = lazy(() => import('./pages/ProtectedRoute.tsx'));
@@ -54,6 +55,9 @@ const router = createBrowserRouter([
           {
             path: '/app/results',
             element: <Results />
+          }, {
+            path: '/app/community',
+            element: <Community />
           }
         ]
       }

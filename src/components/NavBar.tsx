@@ -45,6 +45,10 @@ export default function NavBar() {
                     <Compass size={20}></Compass>
                     <p className='text-sm'>Browse</p>
                 </Link>
+                <Link to='/app/community' className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 w-48 ${location.pathname === '/app/community' ? activeCn : inactiveCn}`}>
+                    <Compass size={20}></Compass>
+                    <p className='text-sm'>Community</p>
+                </Link>
             </div>
             <div className='relative' ref={menuRef}>
 

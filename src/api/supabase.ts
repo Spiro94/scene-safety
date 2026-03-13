@@ -1,4 +1,7 @@
-import type { TriggerReport } from '../models/triggerReport';
+import type {
+  InsertTriggerReport,
+  TriggerReport,
+} from '../models/triggerReport';
 import { supabaseClient } from '../utils/supabaseClient';
 
 /// ***** User API *****
@@ -56,10 +59,11 @@ export function onAuthStateChange(
 
 /// ***** Trigger Report API *****
 
-export async function submitTriggerReport(report: TriggerReport) {
+export async function submitTriggerReport(report: InsertTriggerReport) {
+  const userId = await supabaseClient.auth.getUser();
   const { data, error } = await supabaseClient
     .from('trigger_reports')
-    .insert([report]);
+    .insert({ ...report, user_id: userId.data.user?.id });
 
   if (error) {
     console.error(error);
@@ -91,8 +95,17 @@ export async function getTriggerReport(
   const { data, error } = await supabaseClient
     .from('trigger_reports')
     .select('*')
-    .eq('tmdb_movie_id', movieId)
-    .returns<TriggerReport[]>();
+    .eq('tmdb_movie_id', movieId);
+
+  if (error) throw error;
+
+  return data ?? [];
+}
+
+export async function getAllTriggerReports(): Promise<TriggerReport[]> {
+  const { data, error } = await supabaseClient
+    .from('trigger_reports')
+    .select('*');
 
   if (error) throw error;
 

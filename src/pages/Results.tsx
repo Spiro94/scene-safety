@@ -6,8 +6,8 @@ import LoadingTransition from '../components/LoadingTransition';
 import MovieCard from '../components/MovieCard';
 import useDebounce from '../hooks/useDebounce';
 import type { Movie } from '../models/movie';
-import type { SearchResponse } from '../models/searchResponse';
 import { getFetchOptions, TMDB_BASE_URL } from '../utils/constants';
+import type { TmdbResponse } from '../models/tmdbResponse';
 
 export default function Results() {
     const [searchParams] = useSearchParams();
@@ -23,7 +23,7 @@ export default function Results() {
         }
     }, []);
 
-    const { data, isLoading } = useQuery<SearchResponse>({
+    const { data, isLoading } = useQuery<TmdbResponse<Movie>>({
         queryKey: ['results', debouncedSearch],
         queryFn: () => fetch(`${TMDB_BASE_URL}/search/movie?query=${debouncedSearch}`, getFetchOptions()).then(res => res.json(),),
         enabled: debouncedSearch.length > 0,
