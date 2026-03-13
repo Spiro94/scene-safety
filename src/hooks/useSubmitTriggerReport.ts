@@ -10,6 +10,7 @@ export function useSubmitTriggerReport() {
       const movieId = variables.tmdb_movie_id;
       queryClient.invalidateQueries({ queryKey: ['triggerReport', movieId] });
       queryClient.invalidateQueries({ queryKey: ['triggerReportCounts'] });
+      queryClient.invalidateQueries({ queryKey: ['userTriggerReports'] });
     },
     onError: (error) => {
       console.error('Error submitting trigger:', error);

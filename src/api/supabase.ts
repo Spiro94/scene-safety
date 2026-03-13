@@ -3,6 +3,7 @@ import type {
   InsertTriggerReport,
   TriggerReport,
 } from '../models/triggerReport';
+import type { UserProfile } from '../models/userProfile';
 import { supabaseClient } from '../utils/supabaseClient';
 
 /// ***** User API *****
@@ -61,6 +62,26 @@ export async function getCurrentSession() {
   }
 
   return data.session;
+}
+
+export async function getUserProfile(): Promise<UserProfile> {
+  const user = await supabaseClient.auth.getUser();
+  if (!user.data.user) {
+    throw new Error('No user logged in');
+  }
+
+  const { data, error } = await supabaseClient
+    .from('user_profiles')
+    .select('*')
+    .eq('id', user.data.user.id)
+    .single();
+
+  if (error) {
+    console.error(error);
+    throw error;
+  }
+
+  return data;
 }
 
 export function onAuthStateChange(

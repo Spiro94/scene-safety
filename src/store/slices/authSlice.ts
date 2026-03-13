@@ -3,10 +3,17 @@ import {
   createAsyncThunk,
   type PayloadAction,
 } from '@reduxjs/toolkit';
-import { signUp, signIn, signOut, getCurrentSession } from '../../api/supabase';
+import {
+  signUp,
+  signIn,
+  signOut,
+  getCurrentSession,
+  getUserProfile,
+} from '../../api/supabase';
+import type { UserProfile } from '../../models/userProfile';
 
 export interface AuthState {
-  user: { email: string } | null;
+  user: UserProfile | null;
   loading: boolean;
   error: string | null;
   isAuthenticated: boolean;
@@ -36,8 +43,9 @@ export const signUpAsync = createAsyncThunk(
     { rejectWithValue },
   ) => {
     try {
-      const data = await signUp(email, password, firstName, lastName);
-      return { email: data.user?.email || email };
+      await signUp(email, password, firstName, lastName);
+      const userProfile = await getUserProfile();
+      return userProfile;
     } catch (error: any) {
       return rejectWithValue(error.message || 'Sign up failed');
     }
@@ -51,8 +59,9 @@ export const signInAsync = createAsyncThunk(
     { rejectWithValue },
   ) => {
     try {
-      const data = await signIn(email, password);
-      return { email: data.user?.email || email };
+      await signIn(email, password);
+      const userProfile = await getUserProfile();
+      return userProfile;
     } catch (error: any) {
       return rejectWithValue(error.message || 'Sign in failed');
     }
@@ -75,7 +84,9 @@ export const initializeAuthAsync = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const session = await getCurrentSession();
-      return session?.user?.email ? { email: session.user.email } : null;
+      if (!session) return null;
+      const userProfile = await getUserProfile();
+      return userProfile;
     } catch (error: any) {
       return rejectWithValue(error.message || 'Initialization failed');
     }
@@ -89,7 +100,7 @@ const authSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
-    setAuthenticatedUser: (state, action: PayloadAction<{ email: string }>) => {
+    setAuthenticatedUser: (state, action: PayloadAction<UserProfile>) => {
       state.user = action.payload;
       state.isAuthenticated = true;
       state.error = null;
@@ -109,16 +120,19 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(initializeAuthAsync.fulfilled, (state, action) => {
-        state.loading = false;
-        if (action.payload) {
-          state.user = action.payload;
-          state.isAuthenticated = true;
-        } else {
-          state.user = null;
-          state.isAuthenticated = false;
-        }
-      })
+      .addCase(
+        initializeAuthAsync.fulfilled,
+        (state, action: PayloadAction<UserProfile | null>) => {
+          state.loading = false;
+          if (action.payload) {
+            state.user = action.payload;
+            state.isAuthenticated = true;
+          } else {
+            state.user = null;
+            state.isAuthenticated = false;
+          }
+        },
+      )
       .addCase(initializeAuthAsync.rejected, (state, action) => {
         state.loading = false;
         state.user = null;
@@ -152,7 +166,7 @@ const authSlice = createSlice({
       })
       .addCase(
         signUpAsync.fulfilled,
-        (state, action: PayloadAction<{ email: string }>) => {
+        (state, action: PayloadAction<UserProfile>) => {
           state.loading = false;
           state.user = action.payload;
           state.isAuthenticated = true;
@@ -173,7 +187,7 @@ const authSlice = createSlice({
       })
       .addCase(
         signInAsync.fulfilled,
-        (state, action: PayloadAction<{ email: string }>) => {
+        (state, action: PayloadAction<UserProfile>) => {
           state.loading = false;
           state.user = action.payload;
           state.isAuthenticated = true;

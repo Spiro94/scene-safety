@@ -7,7 +7,7 @@ import './index.css';
 import { store } from './store/store.ts';
 import { useAppDispatch } from './hooks/useDispatch.ts';
 import { clearAuthState, initializeAuthAsync, setAuthenticatedUser } from './store/slices/authSlice.ts';
-import { onAuthStateChange } from './api/supabase.ts';
+import { getUserProfile, onAuthStateChange } from './api/supabase.ts';
 import LoadingTransition from './components/LoadingTransition.tsx';
 import Community from './pages/Community.tsx';
 
@@ -85,9 +85,10 @@ function AppBootstrap() {
     dispatch(initializeAuthAsync());
 
     const { data: subscription } = onAuthStateChange(async (_event, session) => {
-      const email = session?.user?.email;
-      if (email) {
-        dispatch(setAuthenticatedUser({ email }));
+      const userId = session?.user?.id;
+      if (userId) {
+        const userProfile = await getUserProfile();
+        dispatch(setAuthenticatedUser(userProfile));
       } else {
         dispatch(clearAuthState());
       }

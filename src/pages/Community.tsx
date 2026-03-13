@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { useUserTriggerReports } from "../hooks/useTriggerReports";
 import StatCard from "../components/StatCard";
 import useMovieDetailList from "../hooks/useMovieDetailList";
-import { dateAgo } from "../utils/helpers";
+import { capitalize, dateAgo } from "../utils/helpers";
 
 export default function Community() {
     const navigate = useNavigate();
@@ -69,7 +69,7 @@ export default function Community() {
                                                     {movieQuery?.isPending && <p>Loading movie details...</p>}
                                                     {movieQuery?.isError && <p className="text-red-500">Error loading movie details</p>}
                                                     {movieQuery?.data && <p>{movieQuery.data.title}</p>}
-                                                    — <p>{report.trigger_type}</p>
+                                                    — <p>{capitalize(report.trigger_type)}</p>
                                                 </div>
                                                 <p className="text-muted text-sm">Tagged {dateAgo(new Date(report.created_at ?? Date.now()))}</p>
                                             </div>

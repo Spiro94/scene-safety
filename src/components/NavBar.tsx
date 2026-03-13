@@ -26,8 +26,8 @@ export default function NavBar() {
     let inactiveCn = ' text-secondary hover:text-muted ';
 
     const auth = useAppSelector(state => state.auth as AuthState);
-    const userEmail = auth.user?.email ?? '';
-    const userInitial = userEmail.charAt(0).toUpperCase() || '?';
+    const userDisplayName = `${auth.user?.first_name ?? ''} ${auth.user?.last_name.charAt(0).toUpperCase() ?? ''}`.trim();
+    const userInitial = userDisplayName.charAt(0).toUpperCase() || '?';
 
 
     return (
@@ -51,12 +51,11 @@ export default function NavBar() {
                 </Link>
             </div>
             <div className='relative' ref={menuRef}>
-
                 <div onClick={toggleMenu} className='inline-flex gap-2 items-center cursor-pointer'>
                     <div className='h-8 w-8 rounded-full bg-accent-blue-muted text-accent-blue flex items-center justify-center text-sm font-semibold'>
                         {userInitial}
                     </div>
-                    <div className='text-primary text-sm'>{userEmail}</div>
+                    <div className='text-primary text-sm'>{userDisplayName}</div>
                 </div>
                 {menuOpen && (
                     <div className='absolute right-0 mt-2 w-40 bg-card border border-border rounded-lg shadow-md z-50'>
