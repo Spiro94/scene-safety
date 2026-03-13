@@ -22,11 +22,21 @@ const initialState: AuthState = {
 export const signUpAsync = createAsyncThunk(
   'auth/signUp',
   async (
-    { email, password }: { email: string; password: string },
+    {
+      email,
+      password,
+      firstName,
+      lastName,
+    }: {
+      email: string;
+      password: string;
+      firstName?: string;
+      lastName?: string;
+    },
     { rejectWithValue },
   ) => {
     try {
-      const data = await signUp(email, password);
+      const data = await signUp(email, password, firstName, lastName);
       return { email: data.user?.email || email };
     } catch (error: any) {
       return rejectWithValue(error.message || 'Sign up failed');

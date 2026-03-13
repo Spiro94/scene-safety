@@ -38,8 +38,16 @@ export default function SignUp() {
 
 
     async function onSubmit(data: IFormInput) {
+        console.log(`Submitting form with data:`, data)
         if (loading) return
-        const result = await dispatch(signUpAsync({ email: data.email, password: data.password }))
+        const result = await dispatch(
+            signUpAsync({
+                email: data.email,
+                password: data.password,
+                firstName: data.firstName,
+                lastName: data.lastName,
+            }),
+        )
         if (signUpAsync.fulfilled.match(result)) {
             navigate(redirectTo, { replace: true })
         }
