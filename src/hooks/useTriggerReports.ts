@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
+import { getUserTriggerReports } from '../api/supabase';
 
-export function useTriggerReports() {
+export function useUserTriggerReports() {
   return useQuery({
-    queryKey: ['triggerReports'],
-    queryFn: () => fetch('/api/trigger-reports').then((res) => res.json()),
+    queryKey: ['userTriggerReports'],
+    queryFn: getUserTriggerReports,
+    staleTime: 60_000,
   });
 }

@@ -1,4 +1,5 @@
 import type {
+  FullTriggerReport,
   InsertTriggerReport,
   TriggerReport,
 } from '../models/triggerReport';
@@ -102,10 +103,13 @@ export async function getTriggerReport(
   return data ?? [];
 }
 
-export async function getAllTriggerReports(): Promise<TriggerReport[]> {
-  const { data, error } = await supabaseClient
-    .from('trigger_reports')
-    .select('*');
+export async function getUserTriggerReports(): Promise<FullTriggerReport[]> {
+  const userId = (await supabaseClient.auth.getUser()).data.user?.id;
+  const { data, error } = await supabaseClient.rpc('get_full_trigger_reports', {
+    p_user_id: userId,
+  });
+
+  console.warn(`Error ${error}`);
 
   if (error) throw error;
 

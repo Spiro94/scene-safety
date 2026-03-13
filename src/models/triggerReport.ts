@@ -16,3 +16,9 @@ export type InsertTriggerReport = Omit<
   TriggerReport,
   'id' | 'created_at' | 'user_id'
 >;
+
+export type FullTriggerReport = TriggerReport & {
+  helpful_votes: number;
+  not_helpful_votes: number;
+  accuracy_score: number;
+};
