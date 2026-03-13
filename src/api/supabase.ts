@@ -84,6 +84,23 @@ export async function getUserProfile(): Promise<UserProfile> {
   return data;
 }
 
+export async function getSpecificUserProfile(
+  userId: string,
+): Promise<UserProfile> {
+  const { data, error } = await supabaseClient
+    .from('user_profiles')
+    .select('*')
+    .eq('id', userId)
+    .single();
+
+  if (error) {
+    console.error(error);
+    throw error;
+  }
+
+  return data;
+}
+
 export function onAuthStateChange(
   callback: Parameters<typeof supabaseClient.auth.onAuthStateChange>[0],
 ) {

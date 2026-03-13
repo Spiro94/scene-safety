@@ -6,10 +6,41 @@ import StatCard from "../components/StatCard";
 import useMovieDetailList from "../hooks/useMovieDetailList";
 import { capitalize, dateAgo } from "../utils/helpers";
 
+function CommunitySkeleton() {
+    return (
+        <div className='flex flex-col gap-8 px-16 py-8 text-primary mx-auto max-w-7xl animate-pulse'>
+            <header className="flex justify-between items-start">
+                <div className="flex flex-col gap-2">
+                    <div className="h-9 w-80 rounded bg-bg-elevated" />
+                    <div className="h-4 w-md rounded bg-bg-elevated" />
+                </div>
+                <div className="h-10 w-44 rounded-xl bg-bg-elevated" />
+            </header>
+
+            <div className="flex flex-col gap-8">
+                <div className="flex gap-4">
+                    {Array.from({ length: 3 }).map((_, index) => (
+                        <div key={index} className="h-28 flex-1 rounded-2xl bg-card ring-1 ring-border" />
+                    ))}
+                </div>
+                <div className="h-7 w-64 rounded bg-bg-elevated" />
+                <div className="rounded-2xl bg-card ring-1 ring-border">
+                    {Array.from({ length: 3 }).map((_, index) => (
+                        <div key={index} className="border-b-border border-b last:border-0 p-5">
+                            <div className="h-5 w-72 rounded bg-input" />
+                            <div className="mt-3 h-4 w-40 rounded bg-input" />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export default function Community() {
     const navigate = useNavigate();
     const { data, isPending, error } = useUserTriggerReports();
-    const recentContribution = data?.sort((a, b) => new Date(b.created_at ?? Date.now()).getTime() - new Date(a.created_at ?? Date.now()).getTime()).slice(0, 3);
+    const recentContribution = data?.slice().sort((a, b) => new Date(b.created_at ?? Date.now()).getTime() - new Date(a.created_at ?? Date.now()).getTime()).slice(0, 3);
     const movieIds = recentContribution?.map(report => report.tmdb_movie_id);
     const uniqueMovieIds = [...new Set(movieIds)].filter(Boolean);
 
@@ -19,6 +50,10 @@ export default function Community() {
         navigate('/app/trending');
     }
 
+    function handleReportClick(movieId: string) {
+        navigate(`/app/movies/${movieId}`);
+    }
+
     function calculateHelpfulVotes() {
         return data!.map(report => report.helpful_votes).reduce((prev, curr) => prev + curr, 0).toString();
     }
@@ -26,6 +61,27 @@ export default function Community() {
     function calculateAccuracyRating() {
         const totalAccuracy = data!.map(report => report.accuracy_score).reduce((prev, curr) => prev + curr, 0).toString();
         return totalAccuracy === '0' ? 'N/A' : (parseFloat(totalAccuracy) / data!.length).toFixed(2) + '%';
+    }
+
+    if (isPending) {
+        return <CommunitySkeleton />;
+    }
+
+    if (error || !data) {
+        return (
+            <div className='flex flex-col gap-8 px-16 py-8 text-primary mx-auto max-w-7xl'>
+                <header className="flex justify-between items-start">
+                    <div className="flex flex-col gap-2">
+                        <h1 className="text-3xl font-bold">Community Contributions</h1>
+                        <p className="text-secondary">
+                            Help others by tagging trigger content and sharing context.
+                        </p>
+                    </div>
+                    <Button onClick={handleNewContribution}><Plus size={16} /> New Contribution</Button>
+                </header>
+                <p className='text-secondary text-sm'>Could not load contributions. Please try again.</p>
+            </div>
+        );
     }
 
     return (
@@ -40,47 +96,38 @@ export default function Community() {
                 <Button onClick={handleNewContribution}><Plus size={16} /> New Contribution</Button>
 
             </header>
-            {
-                isPending && <p>Loading...</p>
-            }
-            {
-                error && <p className="text-red-500">Error loading contributions. Please try again later.</p>
-            }
-            {
-                data && (
-                    <div className="flex flex-col gap-8">
-                        <div className="flex gap-4">
-                            <StatCard value={data.length.toString()} description="Your Contributions" />
-                            <StatCard value={calculateAccuracyRating()} description="Accuracy Rating" />
-                            <StatCard value={calculateHelpfulVotes()} description="Helpful Votes" valueColor="text-accent-amber" />
-                        </div>
-                        <header>
-                            <h2 className="text-xl font-semibold">Your Recent Contributions</h2>
-                        </header>
-                        <div className="rounded-2xl bg-card ring-1 ring-border">
-                            {
-                                uniqueMovieIds!.map((movieId, index) => {
-                                    const movieQuery = queries[index];
-                                    const reports = data.filter(report => report.tmdb_movie_id === movieId);
-                                    return <>
-                                        {reports.map(report => {
-                                            return <div key={report.tmdb_movie_id} className="border-b-border border-b last:border-0 p-5">
-                                                <div className="flex gap-2">
-                                                    {movieQuery?.isPending && <p>Loading movie details...</p>}
-                                                    {movieQuery?.isError && <p className="text-red-500">Error loading movie details</p>}
-                                                    {movieQuery?.data && <p>{movieQuery.data.title}</p>}
-                                                    — <p>{capitalize(report.trigger_type)}</p>
-                                                </div>
-                                                <p className="text-muted text-sm">Tagged {dateAgo(new Date(report.created_at ?? Date.now()))}</p>
-                                            </div>
-                                        })}
-                                    </>
-                                })
-                            }
-                        </div>
-                    </div>
-                )
-            }
+            <div className="flex flex-col gap-8">
+                <div className="flex gap-4">
+                    <StatCard value={data.length.toString()} description="Your Contributions" />
+                    <StatCard value={calculateAccuracyRating()} description="Accuracy Rating" />
+                    <StatCard value={calculateHelpfulVotes()} description="Helpful Votes" valueColor="text-accent-amber" />
+                </div>
+                <header>
+                    <h2 className="text-xl font-semibold">Your Recent Contributions</h2>
+                </header>
+                <div className="rounded-2xl bg-card ring-1 ring-border">
+                    {
+                        uniqueMovieIds.map((movieId, index) => {
+                            const movieQuery = queries[index];
+                            const reports = data.filter(report => report.tmdb_movie_id === movieId);
+                            return <div key={movieId}>
+                                {reports.map(report => {
+                                    //TODO: Fix the last: 
+                                    return <div key={report.id} onClick={() => handleReportClick(report.tmdb_movie_id)} className="border-b-border border-b last:border-0 p-5 cursor-pointer">
+                                        <div className="flex gap-2">
+                                            {movieQuery?.isPending && <span className='text-secondary text-sm'>Loading movie details...</span>}
+                                            {movieQuery?.isError && <span className='text-secondary text-sm'>Unknown movie</span>}
+                                            {movieQuery?.data && <p>{movieQuery.data.title}</p>}
+                                            — <p>{capitalize(report.trigger_type)}</p>
+                                        </div>
+                                        <p className="text-muted text-sm">Tagged {dateAgo(new Date(report.created_at ?? Date.now()))}</p>
+                                    </div>
+                                })}
+                            </div>
+                        })
+                    }
+                </div>
+            </div>
         </div>
     )
 }

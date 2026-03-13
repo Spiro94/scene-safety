@@ -30,7 +30,6 @@ export const badgeLabels = {
 } as const;
 
 export function dateAgo(date: Date): string {
-  console.log('Calculating date ago for:', date);
   const now = new Date();
   const diff = now.getTime() - date.getTime();
   const seconds = Math.floor(diff / 1000);
