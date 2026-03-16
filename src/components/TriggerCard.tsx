@@ -5,6 +5,7 @@ import useUserProfile from '../hooks/useUserProfile'
 import type { FullTriggerReportWithUserVote } from '../models/triggerReport'
 import { badgeStyles, capitalize } from '../utils/helpers'
 import DeleteReportDialog from './DeleteReportDialog'
+import Dialog from './Dialog'
 import { useRef } from 'react'
 import { useDeleteReport } from '../hooks/useDeleteReport'
 
@@ -18,6 +19,7 @@ export default function TriggerCard({ report: trigger }: TriggerCardProps) {
     const voteMutation = useSubmitUserVote();
     const deleteMutation = useDeleteReport();
     const deleteDialogRef = useRef<HTMLDialogElement>(null);
+    const editDialogRef = useRef<HTMLDialogElement>(null);
 
     console.log('Trigger report with user vote:', trigger.user_vote);
 
@@ -46,6 +48,14 @@ export default function TriggerCard({ report: trigger }: TriggerCardProps) {
         }
     }
 
+    function handleOpenEdit() {
+        editDialogRef.current?.showModal();
+    }
+
+    function handleCloseEdit() {
+        editDialogRef.current?.close();
+    }
+
     return (
         <div className='flex flex-col gap-4 bg-card border-border border rounded-2xl p-5'>
             <div className='flex justify-between gap-2'>
@@ -71,7 +81,7 @@ export default function TriggerCard({ report: trigger }: TriggerCardProps) {
                 <div className='flex gap-2'>
                     {authState.user?.id === trigger.user_id && (
                         <>
-                            <button className='inline-flex gap-2 items-center px-2 py-1 text-muted font-medium cursor-pointer'><Pencil size={14} /> Edit</button>
+                            <button onClick={handleOpenEdit} className='inline-flex gap-2 items-center px-2 py-1 text-muted font-medium cursor-pointer'><Pencil size={14} /> Edit</button>
                             <button onClick={handleOpenDelete} className='inline-flex gap-2 items-center px-2 py-1 text-accent-red font-medium cursor-pointer'><Trash2 size={14} /> Delete</button>
                         </>
                     )}
@@ -82,6 +92,7 @@ export default function TriggerCard({ report: trigger }: TriggerCardProps) {
                 </div>
             </div>
             <DeleteReportDialog ref={deleteDialogRef} onClose={handleCloseDelete} onDelete={handleDelete} />
+            <Dialog ref={editDialogRef} movieId={String(trigger.tmdb_movie_id)} report={trigger} onClose={handleCloseEdit} />
         </div>
     )
 }

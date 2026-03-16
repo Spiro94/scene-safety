@@ -1,29 +1,43 @@
 import { Clock4, Send, ShieldAlert } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSubmitTriggerReport } from '../hooks/useSubmitTriggerReport'
+import { useUpdateTriggerReport } from '../hooks/useUpdateTriggerReport'
 import { CALIFICATION_LIST, PHOBIA_LIST } from '../utils/constants'
 import Button from './Button'
 import Input from './Input'
 import TimestampInput from './MaskedInput'
 import type { Calification } from '../models/calification'
+import type { FullTriggerReport } from '../models/triggerReport'
 import { capitalize } from '../utils/helpers'
 
 export type DialogProps = {
     movieId: string;
     ref?: React.Ref<HTMLDialogElement>,
-    onClose: () => void
+    onClose: () => void;
+    report?: FullTriggerReport;
 }
 
-export default function Dialog({ ref, movieId, onClose }: DialogProps) {
-    const [triggerType, setTriggerType] = useState('');
-    const [calification, setCalification] = useState('');
-    const [startTime, setStartTime] = useState('');
-    const [endTime, setEndTime] = useState('');
-    const [description, setDescription] = useState('');
+export default function Dialog({ ref, movieId, onClose, report }: DialogProps) {
+    const [triggerType, setTriggerType] = useState(report?.trigger_type ?? '');
+    const [calification, setCalification] = useState(report?.calification ?? '');
+    const [startTime, setStartTime] = useState(report?.start_time ?? '');
+    const [endTime, setEndTime] = useState(report?.end_time ?? '');
+    const [description, setDescription] = useState(report?.description ?? '');
     const [timestampError, setTimestampError] = useState('');
 
+    useEffect(() => {
+        setTriggerType(report?.trigger_type ?? '');
+        setCalification(report?.calification ?? '');
+        setStartTime(report?.start_time ?? '');
+        setEndTime(report?.end_time ?? '');
+        setDescription(report?.description ?? '');
+        setTimestampError('');
+    }, [report]);
 
-    const mutation = useSubmitTriggerReport();
+    const isEditMode = !!report;
+    const submitMutation = useSubmitTriggerReport();
+    const updateMutation = useUpdateTriggerReport();
+    const mutation = isEditMode ? updateMutation : submitMutation;
 
     function handleOnClose() {
         setTriggerType('');
@@ -48,16 +62,24 @@ export default function Dialog({ ref, movieId, onClose }: DialogProps) {
     function handleOnSubmit() {
         if (mutation.isPending) return;
         if (!validateTimestamps()) return;
-        mutation.mutate({
+
+        const reportData = {
             tmdb_movie_id: movieId,
             trigger_type: triggerType,
             start_time: startTime,
             end_time: endTime,
             description: description || null,
             calification: calification as Calification,
-        }, {
-            onSuccess: () => handleOnClose(),
-        })
+        };
+
+        if (isEditMode) {
+            updateMutation.mutate(
+                { reportId: report.id!, report: reportData },
+                { onSuccess: () => handleOnClose() },
+            );
+        } else {
+            submitMutation.mutate(reportData, { onSuccess: () => handleOnClose() });
+        }
     }
 
 
@@ -68,7 +90,7 @@ export default function Dialog({ ref, movieId, onClose }: DialogProps) {
 
         <dialog ref={ref} className='bg-card rounded-2xl m-auto backdrop:bg-black/60 border border-border'>
             <div className='px-7 py-6'>
-                <div className='inline-flex gap-3 items-center'><ShieldAlert className='text-accent-teal'></ShieldAlert> <h2 className='text-primary font-semibold text-xl'>Report Trigger</h2></div>
+                <div className='inline-flex gap-3 items-center'><ShieldAlert className='text-accent-teal'></ShieldAlert> <h2 className='text-primary font-semibold text-xl'>{isEditMode ? 'Edit Report' : 'Report Trigger'}</h2></div>
             </div>
             <hr className='text-border'></hr>
             <form onSubmit={(event) => {
@@ -137,7 +159,7 @@ export default function Dialog({ ref, movieId, onClose }: DialogProps) {
                 <div className='flex gap-4 px-7 p-5 justify-end'>
 
                     <Button type='secondary' onClick={handleOnClose}>Cancel</Button>
-                    <Input type='submit' disabled={isSubmitDisabled || mutation.isPending} value={mutation.isPending ? 'Submitting...' : 'Submit Report'} prefixIcon={<Send size={16}></Send>} />
+                    <Input type='submit' disabled={isSubmitDisabled || mutation.isPending} value={mutation.isPending ? (isEditMode ? 'Saving...' : 'Submitting...') : (isEditMode ? 'Save Changes' : 'Submit Report')} prefixIcon={<Send size={16}></Send>} />
                 </div>
             </form>
 

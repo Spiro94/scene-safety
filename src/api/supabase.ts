@@ -1,6 +1,5 @@
 import type { DeleteTriggerPayload } from '../models/deleteTrigger';
 import type {
-  FullTriggerReport,
   FullTriggerReportWithUserVote,
   InsertTriggerReport,
   TriggerReport,
@@ -172,7 +171,9 @@ export async function getMovieTriggerReport(
   return data ?? [];
 }
 
-export async function getUserTriggerReports(): Promise<FullTriggerReport[]> {
+export async function getUserTriggerReports(): Promise<
+  FullTriggerReportWithUserVote[]
+> {
   const userId = (await supabaseClient.auth.getUser()).data.user?.id;
   if (!userId) return [];
 
@@ -230,6 +231,20 @@ export async function submitUserVote(userVote: UserVote) {
 
     return data;
   }
+}
+
+export async function updateTriggerReport(
+  reportId: string,
+  report: InsertTriggerReport,
+) {
+  const { data, error } = await supabaseClient
+    .from('trigger_reports')
+    .update(report)
+    .eq('id', reportId);
+
+  if (error) throw error;
+
+  return data;
 }
 
 export async function deleteTriggerReport(deleteTrigger: DeleteTriggerPayload) {

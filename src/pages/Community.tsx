@@ -108,26 +108,36 @@ export default function Community() {
                     <h2 className="text-xl font-semibold">Your Recent Contributions</h2>
                 </header>
                 <div className="rounded-2xl bg-card ring-1 ring-border">
-                    {
-                        uniqueMovieIds.map((movieId, index) => {
+                    {(() => {
+                        const rows = uniqueMovieIds.flatMap((movieId, index) => {
                             const movieQuery = queries[index];
                             const reports = data.filter(report => report.tmdb_movie_id === movieId);
-                            return <div key={movieId}>
-                                {reports.map(report => {
-                                    //TODO: Fix the last: 
-                                    return <div key={report.id} onClick={() => handleReportClick(report.tmdb_movie_id)} className="border-b-border border-b last:border-0 p-5 cursor-pointer">
-                                        <div className="flex gap-2">
-                                            {movieQuery?.isPending && <span className='text-secondary text-sm'>Loading movie details...</span>}
-                                            {movieQuery?.isError && <span className='text-secondary text-sm'>Unknown movie</span>}
-                                            {movieQuery?.data && <p>{movieQuery.data.title}</p>}
-                                            — <p>{capitalize(report.trigger_type)}</p>
-                                        </div>
-                                        <p className="text-muted text-sm">Tagged {dateAgo(new Date(report.created_at ?? Date.now()))}</p>
-                                    </div>
-                                })}
+                            return reports.map(report => ({ report, movieQuery }));
+                        });
+
+                        return rows.map(({ report, movieQuery }, rowIndex) => {
+                            const isFirst = rowIndex === 0;
+                            const isLast = rowIndex === rows.length - 1;
+                            const roundedClass = isFirst && isLast
+                                ? 'rounded-2xl'
+                                : isFirst
+                                    ? 'rounded-t-2xl'
+                                    : isLast
+                                        ? 'rounded-b-2xl'
+                                        : '';
+                            const borderClass = isLast ? '' : 'border-b border-b-border';
+
+                            return <div key={report.id} onClick={() => handleReportClick(report.tmdb_movie_id)} className={`${borderClass} p-5 cursor-pointer hover:bg-bg-elevated transition-colors duration-200 ${roundedClass}`.trim()}>
+                                <div className="flex gap-2">
+                                    {movieQuery?.isPending && <span className='text-secondary text-sm'>Loading movie details...</span>}
+                                    {movieQuery?.isError && <span className='text-secondary text-sm'>Unknown movie</span>}
+                                    {movieQuery?.data && <p>{movieQuery.data.title}</p>}
+                                    — <p>{capitalize(report.trigger_type)}</p>
+                                </div>
+                                <p className="text-muted text-sm">Tagged {dateAgo(new Date(report.created_at ?? Date.now()))} · {report.helpful_votes} helpful votes</p>
                             </div>
-                        })
-                    }
+                        });
+                    })()}
                 </div>
             </div>
         </div>
