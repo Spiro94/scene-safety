@@ -4,6 +4,9 @@ import { useSubmitUserVote } from '../hooks/useSubmitUserVote'
 import useUserProfile from '../hooks/useUserProfile'
 import type { FullTriggerReportWithUserVote } from '../models/triggerReport'
 import { badgeStyles, capitalize } from '../utils/helpers'
+import DeleteReportDialog from './DeleteReportDialog'
+import { useRef } from 'react'
+import { useDeleteReport } from '../hooks/useDeleteReport'
 
 export type TriggerCardProps = {
     report: FullTriggerReportWithUserVote
@@ -12,16 +15,35 @@ export type TriggerCardProps = {
 export default function TriggerCard({ report: trigger }: TriggerCardProps) {
     const { data, isPending, error } = useUserProfile(trigger.user_id);
     const authState = useAppSelector((state) => state.auth);
-    const mutation = useSubmitUserVote();
+    const voteMutation = useSubmitUserVote();
+    const deleteMutation = useDeleteReport();
+    const deleteDialogRef = useRef<HTMLDialogElement>(null);
 
     console.log('Trigger report with user vote:', trigger.user_vote);
 
     function handleVote(vote: number) {
-        mutation.mutate({
+        voteMutation.mutate({
             movie_id: trigger.tmdb_movie_id,
             report_id: trigger.id!!,
             vote: vote
         })
+    }
+
+    function handleDelete() {
+        deleteMutation.mutate({ report_id: trigger.id!!, movie_id: trigger.tmdb_movie_id });
+        deleteDialogRef.current?.close();
+    }
+
+    function handleOpenDelete() {
+        if (deleteDialogRef.current) {
+            deleteDialogRef.current.showModal();
+        }
+    }
+
+    function handleCloseDelete() {
+        if (deleteDialogRef.current) {
+            deleteDialogRef.current.close();
+        }
     }
 
     return (
@@ -50,7 +72,7 @@ export default function TriggerCard({ report: trigger }: TriggerCardProps) {
                     {authState.user?.id === trigger.user_id && (
                         <>
                             <button className='inline-flex gap-2 items-center px-2 py-1 text-muted font-medium cursor-pointer'><Pencil size={14} /> Edit</button>
-                            <button className='inline-flex gap-2 items-center px-2 py-1 text-accent-red font-medium cursor-pointer'><Trash2 size={14} /> Delete</button>
+                            <button onClick={handleOpenDelete} className='inline-flex gap-2 items-center px-2 py-1 text-accent-red font-medium cursor-pointer'><Trash2 size={14} /> Delete</button>
                         </>
                     )}
                 </div>
@@ -59,6 +81,7 @@ export default function TriggerCard({ report: trigger }: TriggerCardProps) {
                     <button onClick={() => handleVote(-1)} className={`inline-flex gap-1 items-center px-2 py-1 bg-bg-elevated rounded-lg cursor-pointer ${trigger.user_vote === -1 ? 'text-accent-red' : 'text-muted'}`}><ThumbsDown size={14} />{trigger.not_helpful_votes}</button>
                 </div>
             </div>
+            <DeleteReportDialog ref={deleteDialogRef} onClose={handleCloseDelete} onDelete={handleDelete} />
         </div>
     )
 }

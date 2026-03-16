@@ -1,3 +1,4 @@
+import type { DeleteTriggerPayload } from '../models/deleteTrigger';
 import type {
   FullTriggerReport,
   FullTriggerReportWithUserVote,
@@ -229,4 +230,15 @@ export async function submitUserVote(userVote: UserVote) {
 
     return data;
   }
+}
+
+export async function deleteTriggerReport(deleteTrigger: DeleteTriggerPayload) {
+  const { data, error } = await supabaseClient
+    .from('trigger_reports')
+    .delete()
+    .eq('id', deleteTrigger.report_id);
+
+  if (error) throw error;
+
+  return data;
 }
