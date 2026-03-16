@@ -11,7 +11,7 @@ export function useSubmitUserVote() {
       queryClient.invalidateQueries({
         queryKey: ['triggerReport', String(movieId)],
       });
-      console.log(`User vote submitted successfully for movie ID: ${movieId}`);
+      queryClient.invalidateQueries({ queryKey: ['userTriggerReports'] });
     },
     onError: (error) => {
       console.warn(`Error submitting user vote: ${error}`);

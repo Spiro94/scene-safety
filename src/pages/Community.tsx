@@ -59,10 +59,10 @@ export default function Community() {
     }
 
     function calculateAccuracyRating() {
-        const scoredReports = data!.filter(r => r.helpful_votes + r.not_helpful_votes > 0);
-        if (scoredReports.length === 0) return 'N/A';
-        const totalAccuracy = scoredReports.reduce((sum, r) => sum + r.accuracy_score, 0);
-        return (totalAccuracy / scoredReports.length * 100).toFixed(2) + '%';
+        const totalHelpful = data!.reduce((sum, r) => sum + r.helpful_votes, 0);
+        const totalVotes = data!.reduce((sum, r) => sum + r.helpful_votes + r.not_helpful_votes, 0);
+        if (totalVotes === 0) return 'N/A';
+        return (totalHelpful / totalVotes * 100).toFixed(2) + '%';
     }
 
     if (isPending) {

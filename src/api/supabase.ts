@@ -186,20 +186,47 @@ export async function getUserTriggerReports(): Promise<FullTriggerReport[]> {
 
 export async function submitUserVote(userVote: UserVote) {
   const userId = (await supabaseClient.auth.getUser()).data.user?.id;
-  const { data, error } = await supabaseClient
+  const { data: getData, error: getError } = await supabaseClient
     .from('trigger_report_votes')
-    .upsert(
-      {
+    .select('*')
+    .eq('trigger_report_id', userVote.report_id)
+    .eq('user_id', userId)
+    .maybeSingle();
+
+  if (getError) {
+    console.error(getError);
+    throw getError;
+  }
+
+  if (!getData) {
+    const { data, error } = await supabaseClient
+      .from('trigger_report_votes')
+      .insert({
         trigger_report_id: userVote.report_id,
         user_id: userId,
         vote: userVote.vote,
-      },
-      {
-        onConflict: 'trigger_report_id,user_id',
-      },
-    );
+      });
 
-  if (error) throw error;
+    if (error) throw error;
 
-  return data;
+    return data;
+  } else if (getData.vote === userVote.vote) {
+    const { data, error } = await supabaseClient
+      .from('trigger_report_votes')
+      .delete()
+      .eq('id', getData.id);
+
+    if (error) throw error;
+
+    return data;
+  } else {
+    const { data, error } = await supabaseClient
+      .from('trigger_report_votes')
+      .update({ vote: userVote.vote })
+      .eq('id', getData.id);
+
+    if (error) throw error;
+
+    return data;
+  }
 }
