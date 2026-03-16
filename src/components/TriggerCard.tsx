@@ -1,14 +1,29 @@
-import { Brain, Clock4, User } from 'lucide-react'
-import type { TriggerReport } from '../models/triggerReport'
-import { badgeStyles, capitalize } from '../utils/helpers'
+import { Brain, Clock4, Pencil, ThumbsDown, ThumbsUp, Trash2, User } from 'lucide-react'
+import { useAppSelector } from '../hooks/useAppSelector'
+import { useSubmitUserVote } from '../hooks/useSubmitUserVote'
 import useUserProfile from '../hooks/useUserProfile'
+import type { FullTriggerReportWithUserVote } from '../models/triggerReport'
+import { badgeStyles, capitalize } from '../utils/helpers'
 
 export type TriggerCardProps = {
-    report: TriggerReport
+    report: FullTriggerReportWithUserVote
 }
 
 export default function TriggerCard({ report: trigger }: TriggerCardProps) {
     const { data, isPending, error } = useUserProfile(trigger.user_id);
+    const authState = useAppSelector((state) => state.auth);
+    const mutation = useSubmitUserVote();
+
+    console.log('Trigger report with user vote:', trigger.user_vote);
+
+    function handleVote(vote: number) {
+        mutation.mutate({
+            movie_id: trigger.tmdb_movie_id,
+            report_id: trigger.id!!,
+            vote: vote
+        })
+    }
+
     return (
         <div className='flex flex-col gap-4 bg-card border-border border rounded-2xl p-5'>
             <div className='flex justify-between gap-2'>
@@ -29,15 +44,19 @@ export default function TriggerCard({ report: trigger }: TriggerCardProps) {
             {
                 data && <p className='flex gap-2 items-center text-sm text-muted'><User size={14} />Reported by <span className='text-secondary font-semibold'>{data.first_name} {data.last_name}</span></p>
             }
-            <hr className='text-muted h-0.5 my-4 ' />
+            <hr className='text-muted h-0.5 my-3' />
             <div className='flex justify-between'>
-                <div>
-                    <button>Edit</button>
-                    <button>Delete</button>
+                <div className='flex gap-2'>
+                    {authState.user?.id === trigger.user_id && (
+                        <>
+                            <button className='inline-flex gap-2 items-center px-2 py-1 text-muted font-medium cursor-pointer'><Pencil size={14} /> Edit</button>
+                            <button className='inline-flex gap-2 items-center px-2 py-1 text-accent-red font-medium cursor-pointer'><Trash2 size={14} /> Delete</button>
+                        </>
+                    )}
                 </div>
-                <div>
-                    <button>Helpful</button>
-                    <button>Not Helpful</button>
+                <div className='flex gap-3'>
+                    <button onClick={() => handleVote(1)} className={`inline-flex gap-1 items-center px-2 py-1 bg-bg-elevated rounded-lg cursor-pointer ${trigger.user_vote === 1 ? 'text-accent-teal' : 'text-muted'}`}><ThumbsUp size={14} />{trigger.helpful_votes}</button>
+                    <button onClick={() => handleVote(-1)} className={`inline-flex gap-1 items-center px-2 py-1 bg-bg-elevated rounded-lg cursor-pointer ${trigger.user_vote === -1 ? 'text-accent-red' : 'text-muted'}`}><ThumbsDown size={14} />{trigger.not_helpful_votes}</button>
                 </div>
             </div>
         </div>

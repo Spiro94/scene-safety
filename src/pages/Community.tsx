@@ -59,8 +59,10 @@ export default function Community() {
     }
 
     function calculateAccuracyRating() {
-        const totalAccuracy = data!.map(report => report.accuracy_score).reduce((prev, curr) => prev + curr, 0).toString();
-        return totalAccuracy === '0' ? 'N/A' : (parseFloat(totalAccuracy) / data!.length).toFixed(2) + '%';
+        const scoredReports = data!.filter(r => r.helpful_votes + r.not_helpful_votes > 0);
+        if (scoredReports.length === 0) return 'N/A';
+        const totalAccuracy = scoredReports.reduce((sum, r) => sum + r.accuracy_score, 0);
+        return (totalAccuracy / scoredReports.length * 100).toFixed(2) + '%';
     }
 
     if (isPending) {

@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { getTriggerReport } from '../api/supabase';
-import type { TriggerReport } from '../models/triggerReport';
+import { getMovieTriggerReport } from '../api/supabase';
+import type { FullTriggerReportWithUserVote } from '../models/triggerReport';
 
 export function useTriggerReport(movieId?: string) {
-  return useQuery<TriggerReport[]>({
+  return useQuery<FullTriggerReportWithUserVote[]>({
     queryKey: ['triggerReport', movieId],
-    queryFn: () => getTriggerReport(movieId!),
+    queryFn: () => getMovieTriggerReport(movieId!),
     enabled: Boolean(movieId),
     staleTime: 60_000,
   });

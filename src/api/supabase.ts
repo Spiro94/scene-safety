@@ -1,9 +1,11 @@
 import type {
   FullTriggerReport,
+  FullTriggerReportWithUserVote,
   InsertTriggerReport,
   TriggerReport,
 } from '../models/triggerReport';
 import type { UserProfile } from '../models/userProfile';
+import type { UserVote } from '../models/userVote';
 import { supabaseClient } from '../utils/supabaseClient';
 
 /// ***** User API *****
@@ -152,15 +154,52 @@ export async function getTriggerReport(
   return data ?? [];
 }
 
-export async function getUserTriggerReports(): Promise<FullTriggerReport[]> {
+export async function getMovieTriggerReport(
+  movieId: string,
+): Promise<FullTriggerReportWithUserVote[]> {
   const userId = (await supabaseClient.auth.getUser()).data.user?.id;
-  const { data, error } = await supabaseClient.rpc('get_full_trigger_reports', {
-    p_user_id: userId,
-  });
-
-  console.warn(`Error ${error}`);
+  const { data, error } = await supabaseClient.rpc(
+    'get_trigger_reports_by_movie',
+    {
+      p_tmdb_movie_id: movieId,
+      p_user_id: userId,
+    },
+  );
 
   if (error) throw error;
 
   return data ?? [];
+}
+
+export async function getUserTriggerReports(): Promise<FullTriggerReport[]> {
+  const userId = (await supabaseClient.auth.getUser()).data.user?.id;
+  if (!userId) return [];
+
+  const { data, error } = await supabaseClient.rpc('get_full_trigger_reports', {
+    p_user_id: userId,
+  });
+
+  if (error) throw error;
+
+  return data ?? [];
+}
+
+export async function submitUserVote(userVote: UserVote) {
+  const userId = (await supabaseClient.auth.getUser()).data.user?.id;
+  const { data, error } = await supabaseClient
+    .from('trigger_report_votes')
+    .upsert(
+      {
+        trigger_report_id: userVote.report_id,
+        user_id: userId,
+        vote: userVote.vote,
+      },
+      {
+        onConflict: 'trigger_report_id,user_id',
+      },
+    );
+
+  if (error) throw error;
+
+  return data;
 }

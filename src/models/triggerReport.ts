@@ -22,3 +22,8 @@ export type FullTriggerReport = TriggerReport & {
   not_helpful_votes: number;
   accuracy_score: number;
 };
+
+export type FullTriggerReportWithUserVote = FullTriggerReport & {
+  user_vote: number;
+  has_voted: boolean;
+};
