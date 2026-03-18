@@ -16,6 +16,12 @@ export function getFetchOptions(method: string = 'GET') {
   };
 }
 
+export async function tmdbFetch<T>(path: string, method?: string): Promise<T> {
+  const res = await fetch(`${TMDB_BASE_URL}${path}`, getFetchOptions(method));
+  if (!res.ok) throw new Error(`TMDB API error: ${res.status}`);
+  return res.json();
+}
+
 export const PHOBIA_LIST: Phobia[] = [
   { name: 'Acrophobia', description: 'Fear of heights.' },
   { name: 'Aerophobia', description: 'Fear of flying.' },

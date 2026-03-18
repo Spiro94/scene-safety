@@ -8,7 +8,7 @@ import MovieCardSkeleton from './MovieCardSkeleton';
 export default function TrendingNow() {
     const { t } = useTranslation();
     const { isPending, error, data } = useTrendingMovies();
-    const movies = data?.results.slice(0, 6) ?? [];
+    const movies = data?.results?.slice(0, 6) ?? [];
     const movieIds = movies.map((m) => String(m.id));
     const { data: reportCounts = {} } = useTriggerReportCounts(movieIds);
 

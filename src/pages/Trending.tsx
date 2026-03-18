@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import MovieCard from '../components/MovieCard'
-import { getFetchOptions, TMDB_BASE_URL } from '../utils/constants'
+import { tmdbFetch } from '../utils/constants'
 import { useEffect, useRef } from 'react'
 import MovieCardSkeleton from '../components/MovieCardSkeleton'
 import { useTriggerReportCounts } from '../hooks/useTriggerReportCounts'
@@ -20,8 +20,7 @@ export default function Trending() {
     } = useInfiniteQuery<TmdbResponse<Movie>>({
         queryKey: ['trending-page'],
         queryFn: ({ pageParam }) =>
-            fetch(`${TMDB_BASE_URL}/movie/popular?page=${pageParam}`, getFetchOptions())
-                .then(res => res.json()),
+            tmdbFetch<TmdbResponse<Movie>>(`/movie/popular?page=${pageParam}`),
         initialPageParam: 1,
         getNextPageParam: (lastPage) => {
             // TMDB returns page and total_pages
