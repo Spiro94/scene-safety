@@ -1,5 +1,6 @@
 import { Plus, ShieldAlert } from 'lucide-react';
 import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 import BackButton from '../components/BackButton';
 import Button from '../components/Button';
@@ -41,6 +42,7 @@ function MovieDetailsSkeleton() {
 }
 
 export default function MovieDetails() {
+    const { t } = useTranslation();
     const dialogRef = useRef<HTMLDialogElement>(null);
     const { movieId } = useParams<{ movieId: string }>();
 
@@ -56,7 +58,7 @@ export default function MovieDetails() {
     };
 
     if (!movieId) {
-        return <>No movie ID - 404</>;
+        return <>{t('movieDetails.notFound')}</>;
     }
 
     if (isPending) {
@@ -64,7 +66,7 @@ export default function MovieDetails() {
     }
 
     if (error || !movieId) {
-        return <>Error</>;
+        return <>{t('movieDetails.error')}</>;
     }
 
     const posterUrl = `${TMDB_IMAGE_BASE}/${BACKDROP_SIZE}${data.poster_path}`;
@@ -88,10 +90,10 @@ export default function MovieDetails() {
             </div>
             <div className='mt-8'>
                 <div className='flex justify-between items-center'>
-                    <div className='inline-flex gap-3 items-center'><ShieldAlert className='text-accent-amber'></ShieldAlert> <h2 className='font-semibold text-2xl'>Trigger Warnings</h2></div>
+                    <div className='inline-flex gap-3 items-center'><ShieldAlert className='text-accent-amber'></ShieldAlert> <h2 className='font-semibold text-2xl'>{t('movieDetails.triggerWarnings')}</h2></div>
                     <div className='inline-flex items-center gap-4'>
-                        {reportData && <p className='text-secondary text-sm'>{`${reportData.length} triggers identified`}</p>}
-                        <Button onClick={() => { openModal(); }}><Plus size={16} />Report trigger</Button>
+                        {reportData && <p className='text-secondary text-sm'>{t('movieDetails.triggersIdentified', { count: reportData.length })}</p>}
+                        <Button onClick={() => { openModal(); }}><Plus size={16} />{t('movieDetails.reportTrigger')}</Button>
                     </div>
                     <Dialog movieId={movieId} ref={dialogRef} onClose={closeModal}></Dialog>
                 </div>
@@ -100,14 +102,14 @@ export default function MovieDetails() {
                         <TriggerCardSkeleton key={index} />
                     ))}
                     {!reportIsPending && reportError && (
-                        <p className='text-secondary text-sm'>Could not load trigger warnings.</p>
+                        <p className='text-secondary text-sm'>{t('movieDetails.loadError')}</p>
                     )}
                     {!reportIsPending && !reportError && reportData?.map(report => {
                         return <TriggerCard key={report.id} report={report} />;
                     })}
                     {
                         !reportIsPending && !reportError && reportData?.length === 0 && (
-                            <p className='text-secondary text-sm'>No trigger warnings reported yet. Be the first to <button onClick={openModal} className='text-accent-teal hover:text-accent-teal-light cursor-pointer'>report a trigger.</button></p>
+                            <p className='text-secondary text-sm'>{t('movieDetails.noWarnings')} <button onClick={openModal} className='text-accent-teal hover:text-accent-teal-light cursor-pointer'>{t('movieDetails.reportLink')}</button></p>
                         )
                     }
                 </div>

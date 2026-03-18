@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router';
 import BackButton from '../components/BackButton';
 import LoadingTransition from '../components/LoadingTransition';
@@ -10,6 +11,7 @@ import { getFetchOptions, TMDB_BASE_URL } from '../utils/constants';
 import type { TmdbResponse } from '../models/tmdbResponse';
 
 export default function Results() {
+    const { t } = useTranslation();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const inputRef = useRef<HTMLInputElement>(null);
@@ -45,16 +47,16 @@ export default function Results() {
                 ref={inputRef}
                 id="query"
                 type="text"
-                placeholder="Search movies..."
+                placeholder={t('results.placeholder')}
                 defaultValue={query}
                 onChange={handleInputChange}
                 autoFocus
                 className="w-sm sm:w-2xl lg:w-3xl text-secondary py-4 px-6 bg-bg-elevated rounded-2xl mt-8"
             />
-            {isLoading && <LoadingTransition message='Searching movies...' />}
+            {isLoading && <LoadingTransition message={t('results.searching')} />}
             {(data && data.results) && (
                 <>
-                    <span className='text-primary text-sm'>{data.results.length} results <span className='text-secondary'>for "{debouncedSearch}"</span></span>
+                    <span className='text-primary text-sm'>{t('results.resultsCount', { count: data.results.length })} <span className='text-secondary'>{t('results.resultsFor', { query: debouncedSearch })}</span></span>
                     <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-9 gap-4 mt-8'>
                         {data.results.map((movie: Movie) => (
                             <MovieCard key={movie.id} movie={movie} />

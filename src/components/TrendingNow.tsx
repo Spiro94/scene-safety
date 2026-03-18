@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { useTrendingMovies } from '../hooks/useTrendingMovies';
 import { useTriggerReportCounts } from '../hooks/useTriggerReportCounts';
@@ -5,6 +6,7 @@ import MovieCard from './MovieCard';
 import MovieCardSkeleton from './MovieCardSkeleton';
 
 export default function TrendingNow() {
+    const { t } = useTranslation();
     const { isPending, error, data } = useTrendingMovies();
     const movies = data?.results.slice(0, 6) ?? [];
     const movieIds = movies.map((m) => String(m.id));
@@ -23,7 +25,7 @@ export default function TrendingNow() {
     }
 
     if (error) {
-        content = <p className='text-primary'>An error has occurred ...</p>
+        content = <p className='text-primary'>{t('trendingNow.error')}</p>
     }
 
     if (data) {
@@ -38,8 +40,8 @@ export default function TrendingNow() {
         <>
             <div className='px-16 mb-8 flex flex-col gap-10'>
                 <div className='flex justify-between '>
-                    <h1 className='text-primary text-xl font-semibold'>Trending Now</h1>
-                    <Link to='/app/trending' className='text-accent-teal text-sm cursor-pointer hover:text-accent-teal-light'>See all</Link>
+                    <h1 className='text-primary text-xl font-semibold'>{t('trendingNow.title')}</h1>
+                    <Link to='/app/trending' className='text-accent-teal text-sm cursor-pointer hover:text-accent-teal-light'>{t('trendingNow.seeAll')}</Link>
                 </div>
                 {content}
             </div>

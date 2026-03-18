@@ -1,7 +1,23 @@
 {
+  "nav": {
+    "safeWatch": "SafeWatch",
+    "search": "Search",
+    "browse": "Browse",
+    "community": "Community",
+    "logout": "Logout"
+  },
+  "common": {
+    "back": "Back",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "error": "Error",
+    "optional": "Optional",
+    "loading": "Loading..."
+  },
   "signIn": {
     "title": "Welcome Back",
-    "description": "Sign in to continue to Scene Safety",
+    "description": "Sign in to continue to SafeWatch",
     "button": "Sign in",
     "forgotPassword": "Forgot Password?",
     "emailAddress": "Email Address",
@@ -13,5 +29,250 @@
     "passwordRequired": "Password is required",
     "noAccount": "Don't have an account?",
     "signUp": "Sign up"
+  },
+  "signUp": {
+    "title": "Create your account",
+    "description": "Start your journey to safer viewing",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "emailAddress": "Email Address",
+    "emailPlaceholder": "you@example.com",
+    "password": "Password",
+    "button": "Sign up",
+    "buttonLoading": "Signing up...",
+    "firstNameRequired": "First name is required",
+    "lastNameRequired": "Last name is required",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Please enter a valid email address",
+    "passwordRequired": "Password is required",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordRequired": "Please confirm your password",
+    "confirmPasswordMismatch": "Passwords do not match",
+    "alreadyHaveAccount": "Already have an account?",
+    "signIn": "Sign in"
+  },
+  "search": {
+    "title": "Know before you watch.",
+    "subtitle": "Search any movie to find detailed trigger warnings and content context.",
+    "placeholder": "Search movies..."
+  },
+  "results": {
+    "placeholder": "Search movies...",
+    "searching": "Searching movies...",
+    "resultsCount": "{{count}} results",
+    "resultsFor": "for \"{{query}}\""
+  },
+  "trending": {
+    "title": "Trending movies",
+    "errorLoading": "Error loading",
+    "loadingMore": "Loading more..."
+  },
+  "trendingNow": {
+    "title": "Trending Now",
+    "seeAll": "See all",
+    "error": "An error has occurred ..."
+  },
+  "community": {
+    "title": "Community Contributions",
+    "subtitle": "Help others by tagging trigger content and sharing context.",
+    "newContribution": "New Contribution",
+    "loadError": "Could not load contributions. Please try again.",
+    "yourContributions": "Your Contributions",
+    "accuracyRating": "Accuracy Rating",
+    "helpfulVotes": "Helpful Votes",
+    "recentContributions": "Your Recent Contributions",
+    "loadingMovie": "Loading movie details...",
+    "unknownMovie": "Unknown movie",
+    "tagged": "Tagged {{timeAgo}} · {{votes}} helpful votes"
+  },
+  "movieDetails": {
+    "notFound": "No movie ID - 404",
+    "error": "Error",
+    "triggerWarnings": "Trigger Warnings",
+    "triggersIdentified": "{{count}} triggers identified",
+    "reportTrigger": "Report trigger",
+    "loadError": "Could not load trigger warnings.",
+    "noWarnings": "No trigger warnings reported yet. Be the first to",
+    "reportLink": "report a trigger."
+  },
+  "dialog": {
+    "editReport": "Edit Report",
+    "reportTrigger": "Report Trigger",
+    "triggerType": "Trigger Type",
+    "selectTriggerType": "Select a trigger type",
+    "calification": "Calification",
+    "selectCalification": "Select a calification",
+    "timestamp": "Timestamp",
+    "description": "Description",
+    "descriptionPlaceholder": "Describe what happens in the scene to help others prepare...",
+    "submitError": "Something went wrong. Please try again.",
+    "saving": "Saving...",
+    "submitting": "Submitting...",
+    "saveChanges": "Save Changes",
+    "submitReport": "Submit Report",
+    "endTimeError": "End time must be greater than start time"
+  },
+  "deleteDialog": {
+    "title": "Delete Trigger Report",
+    "confirmation": "Are you sure you want to delete this trigger report?"
+  },
+  "triggerCard": {
+    "loadingUser": "Loading user info",
+    "errorLoadingUser": "Error loading user info",
+    "reportedBy": "Reported by"
+  },
+  "protectedRoute": {
+    "checkingSession": "Checking session..."
+  },
+  "maskedInput": {
+    "placeholder": "HH:MM:SS"
+  },
+  "califications": {
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low"
+  },
+  "phobias": {
+    "acrophobia": { "name": "Acrophobia", "description": "Fear of heights." },
+    "aerophobia": { "name": "Aerophobia", "description": "Fear of flying." },
+    "agoraphobia": {
+      "name": "Agoraphobia",
+      "description": "Fear of open or crowded places."
+    },
+    "ailurophobia": { "name": "Ailurophobia", "description": "Fear of cats." },
+    "algophobia": { "name": "Algophobia", "description": "Fear of pain." },
+    "amaxophobia": { "name": "Amaxophobia", "description": "Fear of driving." },
+    "arachnophobia": {
+      "name": "Arachnophobia",
+      "description": "Fear of spiders."
+    },
+    "aquaphobia": { "name": "Aquaphobia", "description": "Fear of water." },
+    "astraphobia": {
+      "name": "Astraphobia",
+      "description": "Fear of thunder and lightning."
+    },
+    "atelophobia": {
+      "name": "Atelophobia",
+      "description": "Fear of imperfection."
+    },
+    "atychiphobia": {
+      "name": "Atychiphobia",
+      "description": "Fear of failure."
+    },
+    "autophobia": {
+      "name": "Autophobia",
+      "description": "Fear of being alone."
+    },
+    "claustrophobia": {
+      "name": "Claustrophobia",
+      "description": "Fear of enclosed spaces."
+    },
+    "coulrophobia": {
+      "name": "Coulrophobia",
+      "description": "Fear of clowns."
+    },
+    "cynophobia": { "name": "Cynophobia", "description": "Fear of dogs." },
+    "dentophobia": {
+      "name": "Dentophobia",
+      "description": "Fear of dentists or dental treatment."
+    },
+    "ecophobia": {
+      "name": "Ecophobia",
+      "description": "Fear of home environments."
+    },
+    "emetophobia": {
+      "name": "Emetophobia",
+      "description": "Fear of vomiting."
+    },
+    "entomophobia": {
+      "name": "Entomophobia",
+      "description": "Fear of insects."
+    },
+    "germophobia": { "name": "Germophobia", "description": "Fear of germs." },
+    "gerascophobia": {
+      "name": "Gerascophobia",
+      "description": "Fear of aging."
+    },
+    "glossophobia": {
+      "name": "Glossophobia",
+      "description": "Fear of public speaking."
+    },
+    "hemophobia": { "name": "Hemophobia", "description": "Fear of blood." },
+    "hydrophobia": { "name": "Hydrophobia", "description": "Fear of water." },
+    "iatrophobia": { "name": "Iatrophobia", "description": "Fear of doctors." },
+    "megalophobia": {
+      "name": "Megalophobia",
+      "description": "Fear of large objects."
+    },
+    "mysophobia": {
+      "name": "Mysophobia",
+      "description": "Fear of dirt or contamination."
+    },
+    "necrophobia": {
+      "name": "Necrophobia",
+      "description": "Fear of death or dead things."
+    },
+    "nomophobia": {
+      "name": "Nomophobia",
+      "description": "Fear of being without a mobile phone."
+    },
+    "nosocomephobia": {
+      "name": "Nosocomephobia",
+      "description": "Fear of hospitals."
+    },
+    "nyctophobia": {
+      "name": "Nyctophobia",
+      "description": "Fear of the dark."
+    },
+    "ophidiophobia": {
+      "name": "Ophidiophobia",
+      "description": "Fear of snakes."
+    },
+    "ornithophobia": {
+      "name": "Ornithophobia",
+      "description": "Fear of birds."
+    },
+    "phasmophobia": {
+      "name": "Phasmophobia",
+      "description": "Fear of ghosts."
+    },
+    "pyrophobia": { "name": "Pyrophobia", "description": "Fear of fire." },
+    "scopophobia": {
+      "name": "Scopophobia",
+      "description": "Fear of being stared at."
+    },
+    "socialPhobia": {
+      "name": "Social Phobia",
+      "description": "Fear of social situations and judgment."
+    },
+    "thanatophobia": {
+      "name": "Thanatophobia",
+      "description": "Fear of death or dying."
+    },
+    "thalassophobia": {
+      "name": "Thalassophobia",
+      "description": "Fear of deep water."
+    },
+    "tokophobia": {
+      "name": "Tokophobia",
+      "description": "Fear of pregnancy or childbirth."
+    },
+    "tonitrophobia": {
+      "name": "Tonitrophobia",
+      "description": "Fear of thunder."
+    },
+    "trypanophobia": {
+      "name": "Trypanophobia",
+      "description": "Fear of needles or injections."
+    },
+    "trypophobia": {
+      "name": "Trypophobia",
+      "description": "Fear or strong aversion to clusters of small holes."
+    },
+    "xenophobia": {
+      "name": "Xenophobia",
+      "description": "Fear of strangers or unfamiliar people."
+    },
+    "zoophobia": { "name": "Zoophobia", "description": "Fear of animals." }
   }
 }

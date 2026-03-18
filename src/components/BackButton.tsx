@@ -1,4 +1,5 @@
 import { ChevronLeft } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router'
 
 type BackButtonProps = {
@@ -12,6 +13,7 @@ function normalizeAppPath(path: string) {
 }
 
 export default function BackButton({ fallbackTo = '/app/search' }: BackButtonProps) {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -38,7 +40,7 @@ export default function BackButton({ fallbackTo = '/app/search' }: BackButtonPro
             className='inline-flex gap-4 text-secondary cursor-pointer items-center hover:text-primary transition duration-200 ease-in-out'
         >
             <ChevronLeft />
-            Back
+            {t('common.back')}
         </button>
     )
 }

@@ -1,4 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import MovieCard from '../components/MovieCard'
 import { getFetchOptions, TMDB_BASE_URL } from '../utils/constants'
 import { useEffect, useRef } from 'react'
@@ -8,6 +9,7 @@ import type { Movie } from '../models/movie'
 import type { TmdbResponse } from '../models/tmdbResponse'
 
 export default function Trending() {
+    const { t } = useTranslation();
     const loadMoreRef = useRef<HTMLDivElement>(null)
 
     const {
@@ -61,7 +63,7 @@ export default function Trending() {
     if (result.isPending) {
         return (
             <div className='px-16 py-8 max-w-7xl mx-auto'>
-                <h1 className='text-primary text-4xl font-semibold mb-8'>Trending movies</h1>
+                <h1 className='text-primary text-4xl font-semibold mb-8'>{t('trending.title')}</h1>
                 <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6'>
                     {Array.from({ length: 12 }).map((_, index) => (
                         <MovieCardSkeleton key={index} />
@@ -72,7 +74,7 @@ export default function Trending() {
     }
 
     if (result.error) {
-        return <div className='text-primary'>Error loading</div>
+        return <div className='text-primary'>{t('trending.errorLoading')}</div>
     }
 
     // Flatten all pages into a single array of movies
@@ -80,7 +82,7 @@ export default function Trending() {
 
     return (
         <div className='px-16 py-8 max-w-7xl mx-auto'>
-            <h1 className='text-primary text-4xl font-semibold mb-8'>Trending movies</h1>
+            <h1 className='text-primary text-4xl font-semibold mb-8'>{t('trending.title')}</h1>
             <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6'>
                 {movies.map(movie => (
                     <MovieCard key={movie.id} movie={movie} triggerCount={reportCounts[String(movie.id)] ?? 0} />
@@ -92,7 +94,7 @@ export default function Trending() {
             {/* Sentinel element - triggers load when scrolled into view */}
             <div ref={loadMoreRef} className='h-10 mt-4'>
                 {isFetchingNextPage && movies.length > 0 && (
-                    <div className='text-secondary text-center'>Loading more...</div>
+                    <div className='text-secondary text-center'>{t('trending.loadingMore')}</div>
                 )}
             </div>
         </div>

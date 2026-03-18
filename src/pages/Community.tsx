@@ -1,4 +1,5 @@
 import { Plus } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import Button from "../components/Button";
 import { useNavigate } from "react-router";
 import { useUserTriggerReports } from "../hooks/useTriggerReports";
@@ -38,6 +39,7 @@ function CommunitySkeleton() {
 }
 
 export default function Community() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { data, isPending, error } = useUserTriggerReports();
     const recentContribution = data?.slice().sort((a, b) => new Date(b.created_at ?? Date.now()).getTime() - new Date(a.created_at ?? Date.now()).getTime()).slice(0, 3);
@@ -74,14 +76,14 @@ export default function Community() {
             <div className='flex flex-col gap-8 px-16 py-8 text-primary mx-auto max-w-7xl'>
                 <header className="flex justify-between items-start">
                     <div className="flex flex-col gap-2">
-                        <h1 className="text-3xl font-bold">Community Contributions</h1>
+                        <h1 className="text-3xl font-bold">{t('community.title')}</h1>
                         <p className="text-secondary">
-                            Help others by tagging trigger content and sharing context.
+                            {t('community.subtitle')}
                         </p>
                     </div>
-                    <Button onClick={handleNewContribution}><Plus size={16} /> New Contribution</Button>
+                    <Button onClick={handleNewContribution}><Plus size={16} /> {t('community.newContribution')}</Button>
                 </header>
-                <p className='text-secondary text-sm'>Could not load contributions. Please try again.</p>
+                <p className='text-secondary text-sm'>{t('community.loadError')}</p>
             </div>
         );
     }
@@ -90,22 +92,22 @@ export default function Community() {
         <div className='flex flex-col gap-8 px-16 py-8 text-primary mx-auto max-w-7xl'>
             <header className="flex justify-between items-start">
                 <div className="flex flex-col gap-2">
-                    <h1 className="text-3xl font-bold">Community Contributions</h1>
+                    <h1 className="text-3xl font-bold">{t('community.title')}</h1>
                     <p className="text-secondary">
-                        Help others by tagging trigger content and sharing context.
+                        {t('community.subtitle')}
                     </p>
                 </div>
-                <Button onClick={handleNewContribution}><Plus size={16} /> New Contribution</Button>
+                <Button onClick={handleNewContribution}><Plus size={16} /> {t('community.newContribution')}</Button>
 
             </header>
             <div className="flex flex-col gap-8">
                 <div className="flex gap-4">
-                    <StatCard value={data.length.toString()} description="Your Contributions" />
-                    <StatCard value={calculateAccuracyRating()} description="Accuracy Rating" />
-                    <StatCard value={calculateHelpfulVotes()} description="Helpful Votes" valueColor="text-accent-amber" />
+                    <StatCard value={data.length.toString()} description={t('community.yourContributions')} />
+                    <StatCard value={calculateAccuracyRating()} description={t('community.accuracyRating')} />
+                    <StatCard value={calculateHelpfulVotes()} description={t('community.helpfulVotes')} valueColor="text-accent-amber" />
                 </div>
                 <header>
-                    <h2 className="text-xl font-semibold">Your Recent Contributions</h2>
+                    <h2 className="text-xl font-semibold">{t('community.recentContributions')}</h2>
                 </header>
                 <div className="rounded-2xl bg-card ring-1 ring-border">
                     {(() => {
@@ -129,12 +131,12 @@ export default function Community() {
 
                             return <div key={report.id} onClick={() => handleReportClick(report.tmdb_movie_id)} className={`${borderClass} p-5 cursor-pointer hover:bg-bg-elevated transition-colors duration-200 ${roundedClass}`.trim()}>
                                 <div className="flex gap-2">
-                                    {movieQuery?.isPending && <span className='text-secondary text-sm'>Loading movie details...</span>}
-                                    {movieQuery?.isError && <span className='text-secondary text-sm'>Unknown movie</span>}
+                                    {movieQuery?.isPending && <span className='text-secondary text-sm'>{t('community.loadingMovie')}</span>}
+                                    {movieQuery?.isError && <span className='text-secondary text-sm'>{t('community.unknownMovie')}</span>}
                                     {movieQuery?.data && <p>{movieQuery.data.title}</p>}
                                     — <p>{capitalize(report.trigger_type)}</p>
                                 </div>
-                                <p className="text-muted text-sm">Tagged {dateAgo(new Date(report.created_at ?? Date.now()))} · {report.helpful_votes} helpful votes</p>
+                                <p className="text-muted text-sm">{t('community.tagged', { timeAgo: dateAgo(new Date(report.created_at ?? Date.now())), votes: report.helpful_votes })}</p>
                             </div>
                         });
                     })()}

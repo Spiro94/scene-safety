@@ -1,0 +1,284 @@
+{
+  "nav": {
+    "safeWatch": "SafeWatch",
+    "search": "Buscar",
+    "browse": "Explorar",
+    "community": "Comunidad",
+    "logout": "Cerrar sesión"
+  },
+  "common": {
+    "back": "Volver",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "error": "Error",
+    "optional": "Opcional",
+    "loading": "Cargando..."
+  },
+  "signIn": {
+    "title": "Bienvenido de nuevo",
+    "description": "Inicia sesión para continuar con SafeWatch",
+    "button": "Iniciar sesión",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "emailAddress": "Dirección de correo electrónico",
+    "emailPlaceholder": "tú@ejemplo.com",
+    "password": "Contraseña",
+    "buttonLoading": "Iniciando sesión...",
+    "emailRequired": "El correo electrónico es obligatorio",
+    "emailInvalid": "Por favor, introduce una dirección de correo electrónico válida",
+    "passwordRequired": "La contraseña es obligatoria",
+    "noAccount": "¿No tienes una cuenta?",
+    "signUp": "Regístrate"
+  },
+  "signUp": {
+    "title": "Crea tu cuenta",
+    "description": "Comienza tu camino hacia una visualización más segura",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "emailAddress": "Dirección de correo electrónico",
+    "emailPlaceholder": "tú@ejemplo.com",
+    "password": "Contraseña",
+    "button": "Regístrate",
+    "buttonLoading": "Registrando...",
+    "firstNameRequired": "El nombre es obligatorio",
+    "lastNameRequired": "El apellido es obligatorio",
+    "emailRequired": "El correo electrónico es obligatorio",
+    "emailInvalid": "Por favor, introduce una dirección de correo electrónico válida",
+    "passwordRequired": "La contraseña es obligatoria",
+    "confirmPassword": "Confirmar contraseña",
+    "confirmPasswordRequired": "Por favor, confirma tu contraseña",
+    "confirmPasswordMismatch": "Las contraseñas no coinciden",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "signIn": "Iniciar sesión"
+  },
+  "search": {
+    "title": "Infórmate antes de ver.",
+    "subtitle": "Busca cualquier película para encontrar advertencias de contenido sensible y contexto detallado.",
+    "placeholder": "Buscar películas..."
+  },
+  "results": {
+    "placeholder": "Buscar películas...",
+    "searching": "Buscando películas...",
+    "resultsCount": "{{count}} resultados",
+    "resultsFor": "para \"{{query}}\""
+  },
+  "trending": {
+    "title": "Películas en tendencia",
+    "errorLoading": "Error al cargar",
+    "loadingMore": "Cargando más..."
+  },
+  "trendingNow": {
+    "title": "Tendencias ahora",
+    "seeAll": "Ver todo",
+    "error": "Ha ocurrido un error ..."
+  },
+  "community": {
+    "title": "Contribuciones de la comunidad",
+    "subtitle": "Ayuda a otros etiquetando contenido sensible y compartiendo contexto.",
+    "newContribution": "Nueva contribución",
+    "loadError": "No se pudieron cargar las contribuciones. Inténtalo de nuevo.",
+    "yourContributions": "Tus contribuciones",
+    "accuracyRating": "Calificación de precisión",
+    "helpfulVotes": "Votos útiles",
+    "recentContributions": "Tus contribuciones recientes",
+    "loadingMovie": "Cargando detalles de la película...",
+    "unknownMovie": "Película desconocida",
+    "tagged": "Etiquetado {{timeAgo}} · {{votes}} votos útiles"
+  },
+  "movieDetails": {
+    "notFound": "Sin ID de película - 404",
+    "error": "Error",
+    "triggerWarnings": "Advertencias de contenido",
+    "triggersIdentified": "{{count}} advertencias identificadas",
+    "reportTrigger": "Reportar advertencia",
+    "loadError": "No se pudieron cargar las advertencias de contenido.",
+    "noWarnings": "Aún no se han reportado advertencias. Sé el primero en",
+    "reportLink": "reportar una advertencia."
+  },
+  "dialog": {
+    "editReport": "Editar reporte",
+    "reportTrigger": "Reportar advertencia",
+    "triggerType": "Tipo de advertencia",
+    "selectTriggerType": "Selecciona un tipo de advertencia",
+    "calification": "Calificación",
+    "selectCalification": "Selecciona una calificación",
+    "timestamp": "Marca de tiempo",
+    "description": "Descripción",
+    "descriptionPlaceholder": "Describe lo que ocurre en la escena para ayudar a otros a prepararse...",
+    "submitError": "Algo salió mal. Por favor, inténtalo de nuevo.",
+    "saving": "Guardando...",
+    "submitting": "Enviando...",
+    "saveChanges": "Guardar cambios",
+    "submitReport": "Enviar reporte",
+    "endTimeError": "La hora de fin debe ser mayor que la hora de inicio"
+  },
+  "deleteDialog": {
+    "title": "Eliminar reporte de advertencia",
+    "confirmation": "¿Estás seguro de que deseas eliminar este reporte de advertencia?"
+  },
+  "triggerCard": {
+    "loadingUser": "Cargando información del usuario",
+    "errorLoadingUser": "Error al cargar información del usuario",
+    "reportedBy": "Reportado por"
+  },
+  "protectedRoute": {
+    "checkingSession": "Verificando sesión..."
+  },
+  "maskedInput": {
+    "placeholder": "HH:MM:SS"
+  },
+  "califications": {
+    "high": "Alta",
+    "medium": "Media",
+    "low": "Baja"
+  },
+  "phobias": {
+    "acrophobia": {
+      "name": "Acrofobia",
+      "description": "Miedo a las alturas."
+    },
+    "aerophobia": { "name": "Aerofobia", "description": "Miedo a volar." },
+    "agoraphobia": {
+      "name": "Agorafobia",
+      "description": "Miedo a los espacios abiertos o concurridos."
+    },
+    "ailurophobia": {
+      "name": "Ailurofobia",
+      "description": "Miedo a los gatos."
+    },
+    "algophobia": { "name": "Algofobia", "description": "Miedo al dolor." },
+    "amaxophobia": { "name": "Amaxofobia", "description": "Miedo a conducir." },
+    "arachnophobia": {
+      "name": "Aracnofobia",
+      "description": "Miedo a las arañas."
+    },
+    "aquaphobia": { "name": "Acuafobia", "description": "Miedo al agua." },
+    "astraphobia": {
+      "name": "Astrafobia",
+      "description": "Miedo a los truenos y relámpagos."
+    },
+    "atelophobia": {
+      "name": "Atelofobia",
+      "description": "Miedo a la imperfección."
+    },
+    "atychiphobia": {
+      "name": "Atiquifobia",
+      "description": "Miedo al fracaso."
+    },
+    "autophobia": { "name": "Autofobia", "description": "Miedo a estar solo." },
+    "claustrophobia": {
+      "name": "Claustrofobia",
+      "description": "Miedo a los espacios cerrados."
+    },
+    "coulrophobia": {
+      "name": "Coulrofobia",
+      "description": "Miedo a los payasos."
+    },
+    "cynophobia": { "name": "Cinofobia", "description": "Miedo a los perros." },
+    "dentophobia": {
+      "name": "Dentofobia",
+      "description": "Miedo a los dentistas o tratamientos dentales."
+    },
+    "ecophobia": {
+      "name": "Ecofobia",
+      "description": "Miedo a los entornos domésticos."
+    },
+    "emetophobia": { "name": "Emetofobia", "description": "Miedo a vomitar." },
+    "entomophobia": {
+      "name": "Entomofobia",
+      "description": "Miedo a los insectos."
+    },
+    "germophobia": {
+      "name": "Germofobia",
+      "description": "Miedo a los gérmenes."
+    },
+    "gerascophobia": {
+      "name": "Gerascofobia",
+      "description": "Miedo a envejecer."
+    },
+    "glossophobia": {
+      "name": "Glosofobia",
+      "description": "Miedo a hablar en público."
+    },
+    "hemophobia": { "name": "Hemofobia", "description": "Miedo a la sangre." },
+    "hydrophobia": { "name": "Hidrofobia", "description": "Miedo al agua." },
+    "iatrophobia": {
+      "name": "Iatrofobia",
+      "description": "Miedo a los médicos."
+    },
+    "megalophobia": {
+      "name": "Megalofobia",
+      "description": "Miedo a los objetos grandes."
+    },
+    "mysophobia": {
+      "name": "Misofobia",
+      "description": "Miedo a la suciedad o la contaminación."
+    },
+    "necrophobia": {
+      "name": "Necrofobia",
+      "description": "Miedo a la muerte o a las cosas muertas."
+    },
+    "nomophobia": {
+      "name": "Nomofobia",
+      "description": "Miedo a estar sin el teléfono móvil."
+    },
+    "nosocomephobia": {
+      "name": "Nosocomefobia",
+      "description": "Miedo a los hospitales."
+    },
+    "nyctophobia": {
+      "name": "Nictofobia",
+      "description": "Miedo a la oscuridad."
+    },
+    "ophidiophobia": {
+      "name": "Ofidiofobia",
+      "description": "Miedo a las serpientes."
+    },
+    "ornithophobia": {
+      "name": "Ornitofobia",
+      "description": "Miedo a las aves."
+    },
+    "phasmophobia": {
+      "name": "Fasmofobia",
+      "description": "Miedo a los fantasmas."
+    },
+    "pyrophobia": { "name": "Pirofobia", "description": "Miedo al fuego." },
+    "scopophobia": {
+      "name": "Escopofobia",
+      "description": "Miedo a ser observado."
+    },
+    "socialPhobia": {
+      "name": "Fobia social",
+      "description": "Miedo a las situaciones sociales y al juicio ajeno."
+    },
+    "thanatophobia": {
+      "name": "Tanatofobia",
+      "description": "Miedo a la muerte o a morir."
+    },
+    "thalassophobia": {
+      "name": "Talasofobia",
+      "description": "Miedo a las aguas profundas."
+    },
+    "tokophobia": {
+      "name": "Tocofobia",
+      "description": "Miedo al embarazo o al parto."
+    },
+    "tonitrophobia": {
+      "name": "Tonitrofobia",
+      "description": "Miedo a los truenos."
+    },
+    "trypanophobia": {
+      "name": "Tripanofobia",
+      "description": "Miedo a las agujas o inyecciones."
+    },
+    "trypophobia": {
+      "name": "Tripofobia",
+      "description": "Miedo o fuerte aversión a los grupos de pequeños agujeros."
+    },
+    "xenophobia": {
+      "name": "Xenofobia",
+      "description": "Miedo a los extraños o personas desconocidas."
+    },
+    "zoophobia": { "name": "Zoofobia", "description": "Miedo a los animales." }
+  }
+}

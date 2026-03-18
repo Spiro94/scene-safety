@@ -1,5 +1,6 @@
 import { Clock4, Send, ShieldAlert } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSubmitTriggerReport } from '../hooks/useSubmitTriggerReport'
 import { useUpdateTriggerReport } from '../hooks/useUpdateTriggerReport'
 import { CALIFICATION_LIST, PHOBIA_LIST } from '../utils/constants'
@@ -18,6 +19,7 @@ export type DialogProps = {
 }
 
 export default function Dialog({ ref, movieId, onClose, report }: DialogProps) {
+    const { t } = useTranslation();
     const [triggerType, setTriggerType] = useState(report?.trigger_type ?? '');
     const [calification, setCalification] = useState(report?.calification ?? '');
     const [startTime, setStartTime] = useState(report?.start_time ?? '');
@@ -53,7 +55,7 @@ export default function Dialog({ ref, movieId, onClose, report }: DialogProps) {
         const numStartTime = startTime.split(':').map(Number);
         const numEndTime = endTime.split(':').map(Number);
         if (numStartTime >= numEndTime) {
-            setTimestampError('End time must be greater than start time');
+            setTimestampError(t('dialog.endTimeError'));
             return false;
         }
         return true;
@@ -90,7 +92,7 @@ export default function Dialog({ ref, movieId, onClose, report }: DialogProps) {
 
         <dialog ref={ref} className='bg-card rounded-2xl m-auto backdrop:bg-black/60 border border-border'>
             <div className='px-7 py-6'>
-                <div className='inline-flex gap-3 items-center'><ShieldAlert className='text-accent-teal'></ShieldAlert> <h2 className='text-primary font-semibold text-xl'>{isEditMode ? 'Edit Report' : 'Report Trigger'}</h2></div>
+                <div className='inline-flex gap-3 items-center'><ShieldAlert className='text-accent-teal'></ShieldAlert> <h2 className='text-primary font-semibold text-xl'>{isEditMode ? t('dialog.editReport') : t('dialog.reportTrigger')}</h2></div>
             </div>
             <hr className='text-border'></hr>
             <form onSubmit={(event) => {
@@ -99,29 +101,30 @@ export default function Dialog({ ref, movieId, onClose, report }: DialogProps) {
             }}>
                 <div className='flex flex-col gap-7 p-7'>
                     <div className='flex flex-col gap-2'>
-                        <label htmlFor='fear-select' className='text-secondary font-semibold text-sm'>Trigger Type</label>
+                        <label htmlFor='fear-select' className='text-secondary font-semibold text-sm'>{t('dialog.triggerType')}</label>
                         <select id='fear-select' name='fears' value={triggerType} onChange={(e) => { setTriggerType(e.target.value) }} className='bg-input px-4 py-4 text-primary placeholder:text-muted rounded-xl text-sm border-0 outline-none ring-0 focus:border-0 focus:outline-none focus:ring-0'>
-                            <option value=''>Select a trigger type</option>
+                            <option value=''>{t('dialog.selectTriggerType')}</option>
                             {
                                 PHOBIA_LIST.map((phobia) => {
-                                    return <option key={phobia.name} value={phobia.name.toLowerCase()}>{`${phobia.name} (${phobia.description})`}</option>
+                                    const key = phobia.name.replace(/\s+(.)/g, (_, c) => c.toUpperCase()).replace(/^(.)/, (_, c) => c.toLowerCase());
+                                    return <option key={phobia.name} value={phobia.name.toLowerCase()}>{`${t(`phobias.${key}.name`)} (${t(`phobias.${key}.description`)})`}</option>
                                 })
                             }
                         </select>
                     </div>
                     <div className='flex flex-col gap-2'>
-                        <label htmlFor='calification-select' className='text-secondary font-semibold text-sm'>Calification</label>
+                        <label htmlFor='calification-select' className='text-secondary font-semibold text-sm'>{t('dialog.calification')}</label>
                         <select id='calification-select' name='calification' value={calification} onChange={(e) => { setCalification(e.target.value) }} className='bg-input px-4 py-4 text-primary placeholder:text-muted rounded-xl text-sm border-0 outline-none ring-0 focus:border-0 focus:outline-none focus:ring-0'>
-                            <option value=''>Select a calification</option>
+                            <option value=''>{t('dialog.selectCalification')}</option>
                             {
                                 CALIFICATION_LIST.map((cal) => {
-                                    return <option key={cal} value={cal}>{capitalize(cal)}</option>
+                                    return <option key={cal} value={cal}>{t(`califications.${cal}`)}</option>
                                 })
                             }
                         </select>
                     </div>
                     <div className='flex flex-col gap-2'>
-                        <label className='text-secondary font-semibold text-sm'>Timestamp</label>
+                        <label className='text-secondary font-semibold text-sm'>{t('dialog.timestamp')}</label>
                         <div className='flex gap-4 items-center'>
                             <TimestampInput
                                 value={startTime}
@@ -139,12 +142,12 @@ export default function Dialog({ ref, movieId, onClose, report }: DialogProps) {
                     </div>
                     <div className='flex flex-col gap-2'>
                         <div className="flex justify-between ">
-                            <label className='text-secondary font-semibold text-sm'>Description</label>
-                            <p className='text-xs text-muted'>Optional</p>
+                            <label className='text-secondary font-semibold text-sm'>{t('dialog.description')}</label>
+                            <p className='text-xs text-muted'>{t('common.optional')}</p>
                         </div>
                         <Input
                             multiline={true}
-                            placeholder='Describe what happens in the scene to help others prepare...'
+                            placeholder={t('dialog.descriptionPlaceholder')}
                             value={description}
                             onChange={(event) => {
                                 setDescription(event.target.value)
@@ -154,12 +157,12 @@ export default function Dialog({ ref, movieId, onClose, report }: DialogProps) {
                     </div>
                 </div>
                 {mutation.isError && (
-                    <p className='text-red-500 text-sm px-7'>Something went wrong. Please try again.</p>
+                    <p className='text-red-500 text-sm px-7'>{t('dialog.submitError')}</p>
                 )}
                 <div className='flex gap-4 px-7 p-5 justify-end'>
 
-                    <Button type='secondary' onClick={handleOnClose}>Cancel</Button>
-                    <Input type='submit' disabled={isSubmitDisabled || mutation.isPending} value={mutation.isPending ? (isEditMode ? 'Saving...' : 'Submitting...') : (isEditMode ? 'Save Changes' : 'Submit Report')} prefixIcon={<Send size={16}></Send>} />
+                    <Button type='secondary' onClick={handleOnClose}>{t('common.cancel')}</Button>
+                    <Input type='submit' disabled={isSubmitDisabled || mutation.isPending} value={mutation.isPending ? (isEditMode ? t('dialog.saving') : t('dialog.submitting')) : (isEditMode ? t('dialog.saveChanges') : t('dialog.submitReport'))} prefixIcon={<Send size={16}></Send>} />
                 </div>
             </form>
 

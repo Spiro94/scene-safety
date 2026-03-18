@@ -3,10 +3,12 @@ import { Link, useLocation } from 'react-router';
 import { useAppSelector } from '../hooks/useAppSelector';
 import { signOutAsync, type AuthState } from '../store/slices/authSlice';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppDispatch } from '../hooks/useDispatch';
 import TranslationSwitcher from './TranslationSwitcher';
 
 export default function NavBar() {
+    const { t } = useTranslation();
     const location = useLocation();
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
@@ -36,19 +38,19 @@ export default function NavBar() {
             <div className='flex-1 gap-8 flex items-center'>
                 <div className='inline-flex gap-2 items-center'>
                     <ShieldCheck className='text-accent-teal'></ShieldCheck>
-                    <h1 className='text-primary'>SafeWatch</h1>
+                    <h1 className='text-primary'>{t('nav.safeWatch')}</h1>
                 </div>
                 <Link to='/app/search' className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 w-48 ${location.pathname === '/app/search' ? activeCn : inactiveCn}`}>
                     <Search size={20}></Search>
-                    <p className='text-sm'>Search</p>
+                    <p className='text-sm'>{t('nav.search')}</p>
                 </Link>
                 <Link to='/app/trending' className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 w-48 ${location.pathname === '/app/trending' ? activeCn : inactiveCn}`}>
                     <Compass size={20}></Compass>
-                    <p className='text-sm'>Browse</p>
+                    <p className='text-sm'>{t('nav.browse')}</p>
                 </Link>
                 <Link to='/app/community' className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 w-48 ${location.pathname === '/app/community' ? activeCn : inactiveCn}`}>
                     <Compass size={20}></Compass>
-                    <p className='text-sm'>Community</p>
+                    <p className='text-sm'>{t('nav.community')}</p>
                 </Link>
             </div>
             <TranslationSwitcher />
@@ -67,7 +69,7 @@ export default function NavBar() {
                                 dispatch(signOutAsync());
                             }}
                         >
-                            <LogOut></LogOut> Logout
+                            <LogOut></LogOut> {t('nav.logout')}
                         </button>
                     </div>
                 )}

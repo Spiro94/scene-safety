@@ -1,4 +1,5 @@
 import { Brain, Clock4, Pencil, ThumbsDown, ThumbsUp, Trash2, User } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useAppSelector } from '../hooks/useAppSelector'
 import { useSubmitUserVote } from '../hooks/useSubmitUserVote'
 import useUserProfile from '../hooks/useUserProfile'
@@ -14,6 +15,7 @@ export type TriggerCardProps = {
 }
 
 export default function TriggerCard({ report: trigger }: TriggerCardProps) {
+    const { t } = useTranslation();
     const { data, isPending, error } = useUserProfile(trigger.user_id);
     const authState = useAppSelector((state) => state.auth);
     const voteMutation = useSubmitUserVote();
@@ -68,21 +70,21 @@ export default function TriggerCard({ report: trigger }: TriggerCardProps) {
             {trigger.description && <p className='text-secondary text-sm'>{trigger.description}</p>}
             <div className='inline-flex gap-2 items-center text-muted text-sm'><Clock4 size={16}></Clock4><span>{trigger.start_time} - {trigger.end_time}</span></div>
             {
-                isPending && <p>Loading user info</p>
+                isPending && <p>{t('triggerCard.loadingUser')}</p>
             }
             {
-                error && <p className='text-accent-red'>Error loading user info</p>
+                error && <p className='text-accent-red'>{t('triggerCard.errorLoadingUser')}</p>
             }
             {
-                data && <p className='flex gap-2 items-center text-sm text-muted'><User size={14} />Reported by <span className='text-secondary font-semibold'>{data.first_name} {data.last_name}</span></p>
+                data && <p className='flex gap-2 items-center text-sm text-muted'><User size={14} />{t('triggerCard.reportedBy')} <span className='text-secondary font-semibold'>{data.first_name} {data.last_name}</span></p>
             }
             <hr className='text-muted h-0.5 my-3' />
             <div className='flex justify-between'>
                 <div className='flex gap-2'>
                     {authState.user?.id === trigger.user_id && (
                         <>
-                            <button onClick={handleOpenEdit} className='inline-flex gap-2 items-center px-2 py-1 text-muted font-medium cursor-pointer'><Pencil size={14} /> Edit</button>
-                            <button onClick={handleOpenDelete} className='inline-flex gap-2 items-center px-2 py-1 text-accent-red font-medium cursor-pointer'><Trash2 size={14} /> Delete</button>
+                            <button onClick={handleOpenEdit} className='inline-flex gap-2 items-center px-2 py-1 text-muted font-medium cursor-pointer'><Pencil size={14} /> {t('common.edit')}</button>
+                            <button onClick={handleOpenDelete} className='inline-flex gap-2 items-center px-2 py-1 text-accent-red font-medium cursor-pointer'><Trash2 size={14} /> {t('common.delete')}</button>
                         </>
                     )}
                 </div>
