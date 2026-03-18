@@ -28,7 +28,11 @@
     "emailInvalid": "Por favor, introduce una dirección de correo electrónico válida",
     "passwordRequired": "La contraseña es obligatoria",
     "noAccount": "¿No tienes una cuenta?",
-    "signUp": "Regístrate"
+    "signUp": "Regístrate",
+    "brandingTitle": "Tu espacio seguro\npara el entretenimiento.",
+    "brandingQuote": "\"SceneSafety cambió completamente cómo elijo películas para mi familia. Saber qué esperar hace toda la diferencia.\"",
+    "brandingAuthorName": "Sarah M.",
+    "brandingAuthorRole": "Madre y amante del cine"
   },
   "signUp": {
     "title": "Crea tu cuenta",
@@ -49,7 +53,13 @@
     "confirmPasswordRequired": "Por favor, confirma tu contraseña",
     "confirmPasswordMismatch": "Las contraseñas no coinciden",
     "alreadyHaveAccount": "¿Ya tienes una cuenta?",
-    "signIn": "Iniciar sesión"
+    "signIn": "Iniciar sesión",
+    "brandingTitle": "Infórmate antes de ver.",
+    "brandingDescription": "Obtén advertencias detalladas de contenido e información sobre escenas sensibles en películas y series. Mantente informado, mantente cómodo.",
+    "brandingFeature1": "Advertencias detalladas para cada título",
+    "brandingFeature2": "Reportes de seguridad impulsados por la comunidad",
+    "brandingFeature3": "Guarda y personaliza tus preferencias",
+    "brandingFooter": "Más de 50,000 espectadores confían en nosotros"
   },
   "search": {
     "title": "Infórmate antes de ver.",

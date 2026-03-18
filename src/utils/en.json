@@ -17,7 +17,7 @@
   },
   "signIn": {
     "title": "Welcome Back",
-    "description": "Sign in to continue to SafeWatch",
+    "description": "Sign in to continue to SceneSafety",
     "button": "Sign in",
     "forgotPassword": "Forgot Password?",
     "emailAddress": "Email Address",
@@ -28,7 +28,11 @@
     "emailInvalid": "Please enter a valid email address",
     "passwordRequired": "Password is required",
     "noAccount": "Don't have an account?",
-    "signUp": "Sign up"
+    "signUp": "Sign up",
+    "brandingTitle": "Your safe space\nfor entertainment.",
+    "brandingQuote": "\"SceneSafety completely changed how I pick movies for my family. Knowing what to expect makes all the difference.\"",
+    "brandingAuthorName": "Sarah M.",
+    "brandingAuthorRole": "Parent & Movie Lover"
   },
   "signUp": {
     "title": "Create your account",
@@ -49,7 +53,13 @@
     "confirmPasswordRequired": "Please confirm your password",
     "confirmPasswordMismatch": "Passwords do not match",
     "alreadyHaveAccount": "Already have an account?",
-    "signIn": "Sign in"
+    "signIn": "Sign in",
+    "brandingTitle": "Know before you watch.",
+    "brandingDescription": "Get detailed content warnings and trigger information for movies and TV shows. Stay informed, stay comfortable.",
+    "brandingFeature1": "Detailed trigger warnings for every title",
+    "brandingFeature2": "Community-driven safety reports",
+    "brandingFeature3": "Save and personalize your preferences",
+    "brandingFooter": "Trusted by 50,000+ viewers worldwide"
   },
   "search": {
     "title": "Know before you watch.",

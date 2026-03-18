@@ -143,18 +143,21 @@ const authSlice = createSlice({
     // Sign out
     builder
       .addCase(signOutAsync.pending, (state) => {
-        state.loading = true;
+        state.user = null;
+        state.isAuthenticated = false;
+        state.loading = false;
         state.error = null;
       })
       .addCase(signOutAsync.fulfilled, (state) => {
-        state.loading = false;
         state.user = null;
         state.isAuthenticated = false;
+        state.loading = false;
         state.error = null;
       })
       .addCase(signOutAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+        state.user = null;
         state.isAuthenticated = false;
       });
 
