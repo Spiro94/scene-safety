@@ -7,6 +7,10 @@ export const BACKDROP_SIZE = 'w1280';
 export const TRIGGER_THRESHOLD = 2;
 
 export function getFetchOptions(method: string = 'GET') {
+  console.log(
+    'Using TMDB API key:',
+    import.meta.env.VITE_TMDB_API_KEY.slice(0, 4) + '****',
+  );
   return {
     method: method.toUpperCase(),
     headers: {
