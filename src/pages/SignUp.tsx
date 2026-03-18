@@ -1,4 +1,4 @@
-import { ArrowRight, Bookmark, Eye, Mail, Shield, TriangleAlert, Users } from 'lucide-react'
+import { ArrowRight, Bookmark, Eye, Mail, ShieldCheck, TriangleAlert, Users } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router'
 import Input from '../components/Input'
@@ -63,16 +63,16 @@ export default function SignUp() {
                 style={{ background: 'linear-gradient(160deg, #1A2332 0%, #0F1117 50%, #162028 100%)' }}>
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-[10px] bg-accent-teal flex items-center justify-center">
-                        <Shield size={22} className="text-[#0F1117]" />
+                        <ShieldCheck size={22} className="text-[#0F1117]" />
                     </div>
-                    <span className="text-primary font-bold text-[22px]">SceneSafety</span>
+                    <span className="text-primary font-bold text-[22px]">SceneWatch</span>
                 </div>
 
                 <div className="flex flex-col gap-8">
                     <h2 className="text-primary font-bold text-[42px] leading-[1.15] -tracking-[1px]">
                         {t('signUp.brandingTitle')}
                     </h2>
-                    <p className="text-secondary text-base leading-[1.6] max-w-[460px]">
+                    <p className="text-secondary text-base leading-[1.6] max-w-115">
                         {t('signUp.brandingDescription')}
                     </p>
                     <div className="flex flex-col gap-5">
@@ -107,14 +107,14 @@ export default function SignUp() {
                 <div className="absolute top-4 right-4">
                     <TranslationSwitcher />
                 </div>
-                <div className="max-w-[400px] w-full flex flex-col gap-8">
+                <div className="max-w-100 w-full flex flex-col gap-8">
                     <div className="flex flex-col gap-2">
                         <h1 className="text-primary font-bold text-[28px] -tracking-[0.5px]">{t('signUp.title')}</h1>
                         <p className="text-secondary text-[15px]">
                             {t('signUp.description')}
                         </p>
                     </div>
-                    <form className="flex flex-col gap-[18px]" onSubmit={handleSubmit(onSubmit)}>
+                    <form className="flex flex-col gap-4.5" onSubmit={handleSubmit(onSubmit)}>
                         <div className="flex justify-between gap-3.5">
                             <div className='flex flex-col gap-1 flex-1'>
                                 <LabeledInput label={t('signUp.firstName')} placeholder={t('signUp.firstName')} {...register('firstName', { required: true, maxLength: 20, pattern: /^[A-Za-z]+$/i })} />

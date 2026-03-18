@@ -9,7 +9,7 @@ import Input from './Input'
 import TimestampInput from './MaskedInput'
 import type { Calification } from '../models/calification'
 import type { FullTriggerReport } from '../models/triggerReport'
-import { capitalize } from '../utils/helpers'
+
 
 export type DialogProps = {
     movieId: string;
