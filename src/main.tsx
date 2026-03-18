@@ -1,15 +1,16 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { StrictMode, Suspense, lazy, useEffect } from 'react';
+import { lazy, StrictMode, Suspense, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { createBrowserRouter, RouterProvider } from 'react-router';
-import './index.css';
-import { store } from './store/store.ts';
-import { useAppDispatch } from './hooks/useDispatch.ts';
-import { clearAuthState, initializeAuthAsync, setAuthenticatedUser } from './store/slices/authSlice.ts';
 import { getUserProfile, onAuthStateChange } from './api/supabase.ts';
 import LoadingTransition from './components/LoadingTransition.tsx';
+import { useAppDispatch } from './hooks/useDispatch.ts';
+import './i18n';
+import './index.css';
 import Community from './pages/Community.tsx';
+import { clearAuthState, initializeAuthAsync, setAuthenticatedUser } from './store/slices/authSlice.ts';
+import { store } from './store/store.ts';
 
 const MovieDetails = lazy(() => import('./pages/MovieDetails.tsx'));
 const ProtectedRoute = lazy(() => import('./pages/ProtectedRoute.tsx'));

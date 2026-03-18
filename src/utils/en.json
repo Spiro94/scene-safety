@@ -1,0 +1,17 @@
+{
+  "signIn": {
+    "title": "Welcome Back",
+    "description": "Sign in to continue to Scene Safety",
+    "button": "Sign in",
+    "forgotPassword": "Forgot Password?",
+    "emailAddress": "Email Address",
+    "emailPlaceholder": "you@example.com",
+    "password": "Password",
+    "buttonLoading": "Signing in...",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Please enter a valid email address",
+    "passwordRequired": "Password is required",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up"
+  }
+}

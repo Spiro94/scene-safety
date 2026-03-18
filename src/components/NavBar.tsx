@@ -4,6 +4,7 @@ import { useAppSelector } from '../hooks/useAppSelector';
 import { signOutAsync, type AuthState } from '../store/slices/authSlice';
 import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch } from '../hooks/useDispatch';
+import TranslationSwitcher from './TranslationSwitcher';
 
 export default function NavBar() {
     const location = useLocation();
@@ -50,6 +51,7 @@ export default function NavBar() {
                     <p className='text-sm'>Community</p>
                 </Link>
             </div>
+            <TranslationSwitcher />
             <div className='relative' ref={menuRef}>
                 <div onClick={toggleMenu} className='inline-flex gap-2 items-center cursor-pointer'>
                     <div className='h-8 w-8 rounded-full bg-accent-blue-muted text-accent-blue flex items-center justify-center text-sm font-semibold'>
