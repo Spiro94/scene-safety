@@ -65,7 +65,7 @@ export default function SignUp() {
                     <div className="w-10 h-10 rounded-[10px] bg-accent-teal flex items-center justify-center">
                         <ShieldCheck size={22} className="text-[#0F1117]" />
                     </div>
-                    <span className="text-primary font-bold text-[22px]">SceneWatch</span>
+                    <span className="text-primary font-bold text-[22px]">SafeWatch</span>
                 </div>
 
                 <div className="flex flex-col gap-8">
